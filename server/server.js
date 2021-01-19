@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 // TODO: IMPLEMENT ROUTES
-app.use("/user", userRoutes);
+app.use("", userRoutes);
 
 // route not found
 app.use("/", (req, res, next) => {
