@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 });
 
 // TODO: IMPLEMENT ROUTES
-app.use("", userRoutes);
+app.use("/", userRoutes);
 app.use("/chats", chatRoutes);
 
 // route not found

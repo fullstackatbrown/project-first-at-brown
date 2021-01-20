@@ -2,17 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const chatController = require("../controllers/chatController");
+const auth = require("../middleware/auth");
 
 // GET /chats
-router.get("/", chatController.getChats);
+router.get("/", auth, chatController.getChats);
 
 // POST /chats/message
-router.post("/message", chatController.sendChat);
+router.post("/message", auth, chatController.sendChat);
 
 // PUT /chats/message
-router.put("/message", chatController.editMessage);
+router.put("/message", auth, chatController.editMessage);
 
 // DELETE /chats/message
-router.delete("/message", chatController.deleteMessage);
+router.delete("/message", auth, chatController.deleteMessage);
 
 module.exports = router;
