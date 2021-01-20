@@ -1,4 +1,4 @@
-const jwt = require("jwt");
+const jwt = require("jsonwebtoken");
 
 // token should contain userId
 // userId will be stored in req.userId
