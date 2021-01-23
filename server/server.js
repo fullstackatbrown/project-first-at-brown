@@ -7,6 +7,7 @@ const compression = require("compression");
 
 // import routes
 const userRoutes = require("./routes/userRoutes");
+const promptRoutes = require("./routes/promptRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
 // create express app
@@ -35,7 +36,9 @@ app.use((req, res, next) => {
 
 // TODO: IMPLEMENT ROUTES
 app.use("/", userRoutes);
+app.use("/", promptRoutes);
 app.use("/chats", chatRoutes);
+
 
 // route not found
 app.use("/", (req, res, next) => {
