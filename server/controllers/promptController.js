@@ -2,9 +2,7 @@ exports.getPrompt = (req, res, next) => {
   const promptId = req.params.promptId;
 };
 
-exports.postPrompt = (req, res, next) => {
-  const promptId = res.params.promptId;
-};
+exports.postPrompt = (req, res, next) => {};
 
 exports.editPrompt = (req, res, next) => {
   const promptId = req.params.promptId;
