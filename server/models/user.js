@@ -33,9 +33,9 @@ exports.update = (account_id, { first_name, last_name, year, picture, concentrat
   [first_name, last_name, year, picture, concentration, pronouns, account_id]
 );
 
-exports.delete = (token) => db.none(
+exports.delete = (account_id) => db.none(
   `DELETE
       FROM account
       WHERE account_id = $1`,
-  [token]
+  [account_id]
 );
