@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const compression = require("compression");
 
 // import routes
-const userRoutes = require("./routes/userRoutes");
+const accountRoutes = require("./routes/accountRoutes");
 const promptRoutes = require("./routes/promptRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 // TODO: IMPLEMENT ROUTES
-app.use("/", userRoutes);
+app.use("/", accountRoutes);
 app.use("/", promptRoutes);
 app.use("/chats", chatRoutes);
 
