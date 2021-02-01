@@ -30,5 +30,3 @@ exports.delete = (room_id) => db.none(
       WHERE room_id = $1`,
   [room_id]
 );
-
-// exports.read(1).then(console.log);
