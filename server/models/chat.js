@@ -7,7 +7,7 @@ exports.create = ({ body, id_to, id_from }) => db.one(
   [body, id_to, id_from]
 );
 
-exports.read = (account_id) => db.one(
+exports.read = (account_id) => db.many(
   `SELECT *
       FROM message
       WHERE sender_id = $1 OR recipient_id = $1`,
