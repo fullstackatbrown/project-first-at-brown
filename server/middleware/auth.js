@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-// token should contain userId
-// userId will be stored in req.userId
+// token should contain accountId
+// accountId will be stored in req.accountId
 module.exports = (req, res, next) => {
   let token = req.get("Authorization");
 
@@ -29,6 +29,6 @@ module.exports = (req, res, next) => {
   }
 
   // valid token
-  req.userId = token.userId;
+  req.accountId = token.accountId;
   next();
 };
