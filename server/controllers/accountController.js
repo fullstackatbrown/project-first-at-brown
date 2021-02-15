@@ -4,17 +4,16 @@ const jwt = require("jsonwebtoken");
 const account = require("../models/account");
 
 exports.login = async (req, res, next) => {
-  const token = req.body.token; // TODO: what token is this? jwt?
-  // User shouldn't have jwt if logging in though. Or is this related to google signin?
+  const token = req.body.token;
 
   try {
-    // TODO: get userId after creating + is it async?
-    const userId = await account.login(token);
+    const result = await account.login(token);
+    const accountId = result.account_id;
 
     // create jwt
-    const jwtoken = jwt.sign({ userId }, process.env.JWT_KEY);
+    const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
 
-    res.json({ token: jwtoken, userId });
+    res.json({ token: jwtoken, accountId });
   } catch (error) {
     return next(error);
   }
@@ -28,25 +27,28 @@ exports.signup = async (req, res, next) => {
   const picture = ""; // TODO: upload or url?
   const pronouns = req.body.pronouns;
   const email = req.body.email;
-
-  // TODO: What token should be stored? jwt? Related to google signin?
+  const token = req.body.token;
 
   try {
-    // TODO: Need to get userId after creating (for jwt & frontend) + is it asynchronous?
-    const userId = await account.create({
+    const result = await account.create({
       first_name: firstName,
       last_name: lastName,
       year,
       concentration,
       pronouns,
       email,
+      token,
+      picture,
     });
 
-    // can use
-    const token = jwt.sign({ email, userId }, process.env.JWT_KEY);
+    const accountId = result.account_id;
 
-    res.status(201).json({ token, userId });
+    // can use
+    const jwtoken = jwt.sign({ email, accountId }, process.env.JWT_KEY);
+
+    res.status(201).json({ token: jwtoken, accountId });
   } catch (err) {
+    console.log(err);
     return next(err);
   }
 };
