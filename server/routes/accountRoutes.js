@@ -10,8 +10,8 @@ router.post("/account/login", accountController.login);
 // POST /account
 router.post("/account", accountController.signup);
 
-// GET /account/
-router.get("/account", auth, accountController.get);
+// GET /account/:accountId
+router.get("/account/:accountId", auth, accountController.get);
 
 // PUT /account
 router.put("/account", auth, accountController.update);

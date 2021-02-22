@@ -45,7 +45,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
 });
 
 exports.get = asyncHandler(async (req, res, next) => {
-  const accountId = req.accountId;
+  const accountId = req.params.accountId;
   const result = await account.read(accountId);
   res.json(result);
 });
