@@ -73,4 +73,10 @@ exports.editAccount = asyncHandler(async (req, res, next) => {
 
 exports.getAccounts = asyncHandler(async (req, res, next) => {
   const accountIds = req.body.accountIds; // array of accountIds
+  const result = [];
+  for (id of accountIds) {
+    const accountDetails = await account.read(id);
+    result.push(accountDetails);
+  }
+  res.json(result);
 });
