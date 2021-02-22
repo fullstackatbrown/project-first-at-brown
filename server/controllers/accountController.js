@@ -44,13 +44,13 @@ exports.signup = asyncHandler(async (req, res, next) => {
   res.status(201).json({ token: jwtoken, accountId });
 });
 
-exports.getAccount = asyncHandler(async (req, res, next) => {
+exports.get = asyncHandler(async (req, res, next) => {
   const accountId = req.accountId;
   const result = await account.read(accountId);
   res.json(result);
 });
 
-exports.editAccount = asyncHandler(async (req, res, next) => {
+exports.update = asyncHandler(async (req, res, next) => {
   const accountId = req.accountId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -71,7 +71,7 @@ exports.editAccount = asyncHandler(async (req, res, next) => {
   res.json(result);
 });
 
-exports.getAccounts = asyncHandler(async (req, res, next) => {
+exports.list = asyncHandler(async (req, res, next) => {
   const accountIds = req.body.accountIds; // array of accountIds
   const result = [];
   for (id of accountIds) {
