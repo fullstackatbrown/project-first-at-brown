@@ -11,12 +11,12 @@ router.post("/account/login", accountController.login);
 router.post("/account", accountController.signup);
 
 // GET /account/:accountId
-router.get("/account/:accountId", auth, accountController.getAccount);
+router.get("/account/:accountId", auth, accountController.get);
 
-// PUT /account/:accountId
-router.put("/account/:accountId", auth, accountController.editAccount);
+// PUT /account
+router.put("/account", auth, accountController.update);
 
 // GET /accounts
-router.get("/accounts", auth, accountController.getAccounts);
+router.get("/accounts", auth, accountController.list);
 
 module.exports = router;
