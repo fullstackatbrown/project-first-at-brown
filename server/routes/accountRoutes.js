@@ -10,11 +10,11 @@ router.post("/account/login", accountController.login);
 // POST /account
 router.post("/account", accountController.signup);
 
-// GET /account/:accountId
-router.get("/account/:accountId", auth, accountController.getAccount);
+// GET /account/
+router.get("/account", auth, accountController.getAccount);
 
-// PUT /account/:accountId
-router.put("/account/:accountId", auth, accountController.editAccount);
+// PUT /account
+router.put("/account", auth, accountController.editAccount);
 
 // GET /accounts
 router.get("/accounts", auth, accountController.getAccounts);

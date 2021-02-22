@@ -45,12 +45,13 @@ exports.signup = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAccount = asyncHandler(async (req, res, next) => {
-  const accountId = req.params.accountId;
-  const userId = await account.read(accountId);
+  const accountId = req.accountId;
+  const result = await account.read(accountId);
+  res.json(result);
 });
 
 exports.editAccount = asyncHandler(async (req, res, next) => {
-  const accountId = req.params.accountId;
+  const accountId = req.accountId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const year = req.body.year;
@@ -58,15 +59,16 @@ exports.editAccount = asyncHandler(async (req, res, next) => {
   const concentration = req.body.concentration;
   const pronouns = req.body.pronouns;
 
-  const userId = await account.update({
+  const result = await account.update(accountId, {
     first_name: firstName,
     last_name: lastName,
     year,
     picture,
     concentration,
     pronouns,
-    accountId,
   });
+
+  res.json(result);
 });
 
 exports.getAccounts = asyncHandler(async (req, res, next) => {
