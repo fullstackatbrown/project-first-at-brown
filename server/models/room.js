@@ -37,24 +37,3 @@ exports.delete = (room_id) => db.none(
       WHERE room_id = $1`,
   [room_id]
 );
-
-exports.createReport = async ({prompt_response_room_id, prompt_response_account_id, reporter_account_id}) => {
-  const report = await db.oneOrNone(
-    `SELECT * FROM prompt_response_report
-        WHERE prompt_response_room_id = $1
-        AND prompt_response_account_id = $2
-        AND reporter_account_id = $3`,
-    [prompt_response_room_id, prompt_response_account_id, reporter_account_id]
-  );
-
-  if (report === null) {
-    return false;
-  } else {
-    await db.none(
-      `INSERT INTO prompt_response_report
-          VALUES ($1, $2, $3)`,
-      [prompt_response_room_id, prompt_response_account_id, reporter_account_id]
-    )
-    return true;
-  }
-}
