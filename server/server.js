@@ -38,9 +38,8 @@ app.use((req, res, next) => {
 // TODO: IMPLEMENT ROUTES
 app.use("/", accountRoutes);
 app.use("/", promptRoutes);
+app.use("/", chatRoutes);
 app.use("/", messageRoutes);
-app.use("/chats", chatRoutes);
-
 
 // route not found
 app.use("/", (req, res, next) => {
