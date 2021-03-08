@@ -56,3 +56,5 @@ app.use((err, req, res, next) => {
 
 // start server
 app.listen(process.env.PORT || 3000);
+
+module.exports = app;
