@@ -3,17 +3,17 @@ const pgtools = require("pgtools");
 const path = require("path");
 
 const config = {
-  user: process.env.POSTGRES_USERNAME,
-  password: process.env.POSTGRES_PASSWORD,
-  port: 5432,
   host: "localhost",
+  port: 5432,
+  user: process.env.POSTGRES_USERNAME,
+  password: process.env.POSTGRES_PASSWORD,  
 };
 
 exports.dropDatabase = async (dbName) => {
   try {
     await pgtools.dropdb(config, dbName);
   } catch {
-    console.error("Failed to drop database", dbName);
+    console.error("Warning: failed to drop database", dbName);
   }
 };
 
@@ -26,5 +26,4 @@ exports.createDatabase = async (dbName) => {
       minify: true,
     })
   );
-  console.log("Done generating database", dbName);
 };
