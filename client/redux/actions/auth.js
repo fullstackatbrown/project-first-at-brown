@@ -33,35 +33,6 @@ export const signup = () => {
   };
 };
 
-export const login = (idToken) => {
-  return async (dispatch) => {
-    try {
-      const response = await API.post("account/login", {
-        token: idToken,
-      });
-
-      if (response.status != 200) throw new Error("Login failed");
-
-      // store user data in async storage
-      await AsyncStorage.setItem(
-        "@account",
-        JSON.stringify({
-          token: response.data.token,
-          accountId: response.data.accountId,
-        })
-      );
-
-      // store login data in store
-      dispatch({
-        type: LOGIN,
-        payload: response.data,
-      });
-    } catch (error) {
-      throw error;
-    }
-  };
-};
-
 export const autoLogin = (token, accountId) => {
   return (dispatch) => {
     dispatch({
