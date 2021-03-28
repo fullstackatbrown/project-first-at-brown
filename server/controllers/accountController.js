@@ -7,7 +7,17 @@ const account = require("../models/account");
 exports.login = asyncHandler(async (req, res, next) => {
   const token = req.body.token;
 
-  const result = await account.login(token);
+  let result;
+
+  try {
+    result = await account.login(token);
+  } catch (e) {
+    // naive catching for now
+    const error = new Error(e.message);
+    error.statusCode = 404;
+    throw error;
+  }
+
   const accountId = result.account_id;
 
   // create jwt
