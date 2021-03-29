@@ -1,6 +1,12 @@
 const pgp = require("pg-promise")({});
 const pgtools = require("pgtools");
-const path = require("path");
+const db = require("../config/db");
+const { dumpQueryFile, dropQueryFile } = require("../config/db/dump");
+
+exports.resetTables = async () => {
+  await db.none(dropQueryFile);
+  await db.none(dumpQueryFile);
+}
 
 const config = {
   host: "localhost",
@@ -21,9 +27,5 @@ exports.createDatabase = async (dbName) => {
   await this.dropDatabase(dbName);
   await pgtools.createdb(config, dbName);
   const db = pgp({ ...config, database: dbName });
-  await db.none(
-    new pgp.QueryFile(path.join(__dirname, "../config/db/dump.sql"), {
-      minify: true,
-    })
-  );
+  await db.none(dumpQueryFile);
 };

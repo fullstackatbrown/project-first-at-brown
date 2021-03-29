@@ -2,9 +2,9 @@ const supertest = require('supertest');
 const app = require('../server.js');
 const chai = require('chai');
 
-// Set database to "test"
-global.dbName = "test";
-process.env.POSTGRES_DATABASE = "test";
+if (process.env.POSTGRES_DATABASE !== "test") {
+  throw new Error("Please use POSTGRES_DATABASE=test when testing");
+}
 
 global.request = supertest(app);
 global.expect = chai.expect;
