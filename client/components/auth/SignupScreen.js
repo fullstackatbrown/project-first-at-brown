@@ -1,11 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignupScreen = () => {
   return (
-    <View>
+    <SafeAreaView>
       <Text>Signup</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

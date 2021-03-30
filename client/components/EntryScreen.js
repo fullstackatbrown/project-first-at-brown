@@ -7,7 +7,7 @@ import AuthNavigator from "../navigation/AuthNavigator";
 
 const EntryScreen = () => {
   const accountId = useSelector((state) => state.auth.accountId);
-  return <>{accountId ? <AuthNavigator /> : <Test />}</>;
+  return <>{accountId ? <Test /> : <AuthNavigator />}</>;
 };
 
 export default EntryScreen;

@@ -38,31 +38,34 @@ const LoginScreen = (props) => {
       return;
     }
 
-    // attempt login
-    const response = await API.post("account/login", {
-      token,
-    });
+    try {
+      // attempt login
+      const response = await API.post("account/login", {
+        token,
+      });
+      console.log(response.data);
 
+      // SUCCESS - login
+      // dispatch(autoLogin(response.data.token, response.data.accountId));
+    } catch (e) {
+      // ERROR - if 404, redirect to signup
+      if (e.response.status === 404) {
+        console.log("404 not found");
+        props.navigation.navigate("Signup");
+        return;
+      }
+    }
+  };
+
+  const test = async () => {
+    const response = await API.post("account/login", { token: "test" });
     console.log(response);
-
-    if (response.status === 404) {
-      // no account - navigate to signup
-      props.navigation.navigate("Signup");
-      return;
-    }
-
-    if (response.status !== 200) {
-      // other errors
-      return;
-    }
-
-    // SUCCESS - login
-    dispatch(autoLogin(response.token, response.accountId));
   };
 
   return (
     <SafeAreaView style={styles.screen}>
       <Button onPress={attemptSignin} title="Google Sign in" />
+      <Button onPress={test} title="test" />
     </SafeAreaView>
   );
 };
