@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 import config from "../../config";
 import API from "../../api";
-import { autoLogin } from "../../redux/actions/auth";
+import { login } from "../../redux/actions/auth";
 
 const LoginScreen = (props) => {
   const dispatch = useDispatch();
@@ -43,10 +43,9 @@ const LoginScreen = (props) => {
       const response = await API.post("account/login", {
         token,
       });
-      console.log(response.data);
 
       // SUCCESS - login
-      // dispatch(autoLogin(response.data.token, response.data.accountId));
+      dispatch(login(response.data.token, response.data.accountId));
     } catch (e) {
       // ERROR - if 404, redirect to signup
       if (e.response.status === 404) {
@@ -57,15 +56,9 @@ const LoginScreen = (props) => {
     }
   };
 
-  const test = async () => {
-    const response = await API.post("account/login", { token: "test" });
-    console.log(response);
-  };
-
   return (
     <SafeAreaView style={styles.screen}>
       <Button onPress={attemptSignin} title="Google Sign in" />
-      <Button onPress={test} title="test" />
     </SafeAreaView>
   );
 };

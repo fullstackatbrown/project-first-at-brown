@@ -33,6 +33,24 @@ export const signup = () => {
   };
 };
 
+export const login = (token, accountId) => {
+  return async (dispatch) => {
+    // store user data in async storage
+    await AsyncStorage.setItem(
+      "@account",
+      JSON.stringify({
+        token,
+        accountId,
+      })
+    );
+
+    dispatch({
+      type: LOGIN,
+      payload: { token, accountId },
+    });
+  };
+};
+
 export const autoLogin = (token, accountId) => {
   return (dispatch) => {
     dispatch({
