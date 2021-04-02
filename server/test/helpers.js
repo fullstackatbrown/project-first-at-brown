@@ -8,3 +8,18 @@ if (process.env.POSTGRES_DATABASE !== "test") {
 
 global.request = supertest(app);
 global.expect = chai.expect;
+
+// Helper for registering an account, returning the auth token
+global.registerAccount = async () => {
+  const res = await request.post('/account')
+    .send({
+      firstName: "Jane",
+      lastName: "Doe",
+      year: "2025",
+      concentration: "Computer Science",
+      pronouns: "she/her/hers",
+      email: "jane_doe@brown.edu",
+      token: "abc123",
+    });
+  return res.body.token;
+};

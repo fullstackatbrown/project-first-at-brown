@@ -6,4 +6,4 @@ To create new databases or delete existing ones, set your `POSTGRES_USERNAME` an
 
 After creating a new database, set your `POSTGRES_DATABASE` environment variable to the database's name.
 
-To run tests, ensure that you have an existing database named "test" (use the helpers in `utils/db-helpers.js` to create a new database if needed). Then, run `POSTGRES_DATABASE=test yarn test`.
+To run tests, ensure that you have an existing database named "test" (use the helpers in `utils/db-helpers.js` to create a new database if needed). Then, run `yarn test`.

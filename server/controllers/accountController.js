@@ -39,7 +39,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
 
   const accountId = result.account_id;
   // can use
-  const jwtoken = jwt.sign({ email, accountId }, process.env.JWT_KEY);
+  const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
 
   res.status(201).json({ token: jwtoken, accountId });
 });

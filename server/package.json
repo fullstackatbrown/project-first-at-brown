@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "test": "NODE_ENV=test mocha test/**/*.js"
+    "test": "POSTGRES_DATABASE=test NODE_ENV=test mocha test/**/*.js"
   },
   "author": "",
   "license": "ISC",
