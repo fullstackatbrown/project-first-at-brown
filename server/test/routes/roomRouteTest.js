@@ -31,11 +31,10 @@ describe('Room Routes', () => {
         .set('Authorization', 'Bearer ' + jwt)
         .expect(200);
 
-      const { room_id, prompt, num_responses } = res.body;
-      expect({ room_id, prompt, num_responses }).to.eql({
+      const { room_id, prompt } = res.body;
+      expect({ room_id, prompt }).to.eql({
         room_id: 1,
         prompt: "What's your favorite color?",
-        num_responses: "0",
       });
     });
   });
@@ -64,6 +63,43 @@ describe('Room Routes', () => {
           num_responses: "0",
         },
       ]);
+    });
+  });
+
+  describe('PUT /room/:roomId', () => {
+    it('updates room information', async () => {
+      const jwt = await registerAccount();
+      await makeRoom(jwt, "Where are you from?", new Date())
+        .expect(200);
+      await request.put('/room/1')
+        .set('Authorization', 'Bearer ' + jwt)
+        .send({
+          prompt: "What is your favorite animal?",
+          expiresAt: new Date(),
+        })
+        .expect(200);
+      const res = await request.get('/room/1')
+        .set('Authorization', 'Bearer ' + jwt)
+        .expect(200);
+      expect(res.body.prompt).to.eql("What is your favorite animal?");
+    });
+  });
+
+  describe('DELETE /room/:roomId', () => {
+    it('deletes room information', async () => {
+      const jwt = await registerAccount();
+      await makeRoom(jwt, "Where are you from?", new Date())
+        .expect(200);
+      await request.get('/room/1')
+        .set('Authorization', 'Bearer ' + jwt)
+        .expect(200);
+      await request.delete('/room/1')
+        .set('Authorization', 'Bearer ' + jwt)
+        .expect(200);
+      const res = await request.get('/room/1')
+        .set('Authorization', 'Bearer ' + jwt)
+        .expect(404);
+      expect(res.body.message).to.eq("room not found");
     });
   });
 });

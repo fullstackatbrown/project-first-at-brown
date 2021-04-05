@@ -27,7 +27,7 @@ exports.create = ({ prompt, expires_at }) => db.one(
 exports.update = (room_id, { prompt, expires_at }) => db.none(
   `UPDATE room
       SET prompt     = COALESCE($1, prompt),
-          expires_at = COALESCE($2, expires_at),
+          expires_at = COALESCE($2, expires_at)
       WHERE room_id  = $3`,
   [prompt, expires_at, room_id]
 );

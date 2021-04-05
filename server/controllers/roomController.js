@@ -10,14 +10,14 @@ exports.getRooms = asyncHandler(async (_req, res) => {
 exports.getRoom = asyncHandler(async (req, res) => {
   const roomId = req.params.roomId;
 
-  const room = await room.read(roomId);
+  const result = await room.read(roomId);
 
-  if (room === null) {
-    res.status(404);
+  if (result === null) {
+    res.status(404).json({ message: "room not found" });
     return;
   }
 
-  res.json(room);
+  res.json(result);
 });
 
 exports.createRoom = asyncHandler(async (req, res) => {
@@ -35,7 +35,7 @@ exports.createRoom = asyncHandler(async (req, res) => {
 });
 
 exports.updateRoom = asyncHandler(async (req, res) => {
-  const roomId = req.roomId;
+  const roomId = req.params.roomId;
   const prompt = req.body.prompt;
   const expiresAt = req.body.expiresAt;
 
@@ -45,7 +45,7 @@ exports.updateRoom = asyncHandler(async (req, res) => {
 });
 
 exports.deleteRoom = asyncHandler(async (req, res) => {
-  const roomId = req.roomId;
+  const roomId = req.params.roomId;
 
   const result = await room.delete(roomId);
 
