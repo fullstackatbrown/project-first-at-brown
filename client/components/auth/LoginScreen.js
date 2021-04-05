@@ -58,7 +58,8 @@ const LoginScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Button onPress={attemptSignin} title="Google Sign in" />
+      <Text style={styles.title}>First at Brown</Text>
+      <Button style= {styles.siginIn} onPress={attemptSignin} title="Google Sign in" />
     </SafeAreaView>
   );
 };
@@ -66,5 +67,19 @@ const LoginScreen = (props) => {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
+  screen: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontWeight: "normal",
+    fontSize: 50,
+    color: "black",
+  },
+  siginIn: {
+    alignItems: "center"
+  }
 });
+ 
