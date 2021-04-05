@@ -8,7 +8,7 @@ exports.getRooms = asyncHandler(async (_req, res) => {
 });
 
 exports.getRoom = asyncHandler(async (req, res) => {
-  const roomId = req.roomId;
+  const roomId = req.params.roomId;
 
   const room = await room.read(roomId);
 

@@ -13,7 +13,8 @@ exports.readAll = () => db.any(
       LEFT JOIN prompt_response
       ON room.room_id = prompt_response.room_id
       WHERE room.expires_at > NOW()
-      GROUP BY room.room_id`,
+      GROUP BY room.room_id
+      ORDER BY room.created_at DESC`,
 );
 
 exports.create = ({ prompt, expires_at }) => db.one(
