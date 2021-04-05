@@ -7,6 +7,7 @@ const compression = require("compression");
 
 // import routes
 const accountRoutes = require("./routes/accountRoutes");
+const roomRoutes = require("./routes/roomRoutes");
 const promptRoutes = require("./routes/promptRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 
 // TODO: IMPLEMENT ROUTES
 app.use("/", accountRoutes);
+app.use("/", roomRoutes);
 app.use("/", promptRoutes);
 app.use("/", chatRoutes);
 app.use("/", messageRoutes);
@@ -50,7 +52,7 @@ app.use("/", (req, res, next) => {
 app.use((err, req, res, next) => {
   const status = err.statusCode || 500;
   const message = err.message;
-
+  console.error(err)
   res.status(status).json({ message });
 });
 

@@ -11,15 +11,13 @@ exports.read = ({ account_id1, account_id2 }) =>
   );
 
 exports.list = (account_id) =>
-  db
-    .any(
+  db.any(
       `SELECT *
       FROM message
       WHERE sender_id = $1 OR recipient_id = $1
       ORDER BY created_at DESC`,
       [account_id]
-    )
-    .then((messages) => {
+    ).then((messages) => {
       const chats = {};
       for (const message of messages) {
         const { sender_id, recipient_id } = message;

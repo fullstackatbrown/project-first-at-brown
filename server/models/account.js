@@ -1,14 +1,14 @@
 const db = require("../config/db");
 
 exports.login = (token) =>
-  db.one(
+  db.oneOrNone(
     `SELECT *
       FROM account
       WHERE token = $1`,
     [token]
   );
 
-exports.create = ({
+exports.create = async ({
   first_name,
   last_name,
   year,
@@ -17,8 +17,22 @@ exports.create = ({
   pronouns,
   token,
   email,
-}) =>
-  db.one(
+}) => {
+  const existingAccountWithToken = await db.oneOrNone(
+    `SELECT * FROM account WHERE token = $1`, [token]
+  );
+  if (existingAccountWithToken != null) {
+    return { error: "Account with authentication token already exists" };
+  }
+
+  const existingAccountWithEmail = await db.oneOrNone(
+    `SELECT * FROM account WHERE email = $1`, [email]
+  );
+  if (existingAccountWithEmail != null) {
+    return { error: "Account with the email '" + email + "' already exists" };
+  }
+
+  return db.one(
     `INSERT INTO account (first_name, last_name, year, picture, concentration, pronouns, token, email)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       RETURNING account_id`,
@@ -33,9 +47,10 @@ exports.create = ({
       email,
     ]
   );
+}
 
 exports.read = (account_id) =>
-  db.one(
+  db.oneOrNone(
     `SELECT *
       FROM account
       WHERE account_id = $1`,
@@ -48,12 +63,12 @@ exports.update = (
 ) =>
   db.none(
     `UPDATE account
-      SET first_name    = $1,
-          last_name     = $2,
-          year          = $3,
-          picture       = $4,
-          concentration = $5,
-          pronouns      = $6
+      SET first_name    = COALESCE($1, first_name),
+          last_name     = COALESCE($2, last_name),
+          year          = COALESCE($3, year),
+          picture       = COALESCE($4, picture),
+          concentration = COALESCE($5, concentration),
+          pronouns      = COALESCE($6, pronouns)
       WHERE account_id  = $7`,
     [first_name, last_name, year, picture, concentration, pronouns, account_id]
   );
