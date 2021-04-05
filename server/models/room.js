@@ -16,7 +16,7 @@ exports.readAll = () => db.any(
       GROUP BY room.room_id`,
 );
 
-exports.create = ({ prompt, expires_at }) => db.oneOrNone(
+exports.create = ({ prompt, expires_at }) => db.one(
   `INSERT INTO room (prompt, expires_at)
       VALUES ($1, $2)
       RETURNING room_id`,
@@ -25,8 +25,8 @@ exports.create = ({ prompt, expires_at }) => db.oneOrNone(
 
 exports.update = (room_id, { prompt, expires_at }) => db.none(
   `UPDATE room
-      SET prompt     = $1,
-          expires_at = $2,
+      SET prompt     = COALESCE($1, prompt),
+          expires_at = COALESCE($2, expires_at),
       WHERE room_id  = $3`,
   [prompt, expires_at, room_id]
 );

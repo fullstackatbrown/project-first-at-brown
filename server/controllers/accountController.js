@@ -1,19 +1,18 @@
 const jwt = require("jsonwebtoken");
-// const { validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
-
 const account = require("../models/account");
 
 exports.login = asyncHandler(async (req, res, next) => {
   const token = req.body.token;
-
   const result = await account.login(token);
-  const accountId = result.account_id;
-
-  // create jwt
-  const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
-
-  res.json({ token: jwtoken, accountId });
+  if (result == null) {
+    res.status(401).json({ error: "Invalid credential" });
+  } else {
+    const accountId = result.account_id;
+    // create jwt
+    const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
+    res.json({ token: jwtoken, accountId });
+  }
 });
 
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -37,11 +36,13 @@ exports.signup = asyncHandler(async (req, res, next) => {
     picture,
   });
 
-  const accountId = result.account_id;
-  // can use
-  const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
-
-  res.status(201).json({ token: jwtoken, accountId });
+  if (result.error) {
+    res.status(400).json({ error: result.error })
+  } else {
+    const accountId = result.account_id;
+    const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
+    res.status(201).json({ token: jwtoken, accountId });
+  }
 });
 
 exports.get = asyncHandler(async (req, res, next) => {
@@ -76,7 +77,9 @@ exports.list = asyncHandler(async (req, res, next) => {
   const result = [];
   for (id of accountIds) {
     const accountDetails = await account.read(id);
-    result.push(accountDetails);
+    if (accountDetails != null) {
+      result.push(accountDetails);
+    }
   }
   res.json(result);
 });
