@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 // Returns true if created successfully, false otherwise
-exports.create = ({ room_id, account_id, body, created_at }) => {
+exports.create = async ({ room_id, account_id, body, created_at }) => {
   const promptResponse = await db.oneOrNone(
     `SELECT * FROM prompt_response
         WHERE room_id = $1
@@ -23,8 +23,8 @@ exports.create = ({ room_id, account_id, body, created_at }) => {
 
 exports.update = ({ room_id, account_id }, { body, created_at }) => db.none(
   `UPDATE prompt_response
-      SET body = $1, created_at = $2,
-      WHERE room_id  = $3 AND account_id = $4`,
+      SET body = COALESCE($1, body), created_at = COALESCE($2, created_at),
+      WHERE room_id = $3 AND account_id = $4`,
   [body, created_at, room_id, account_id]
 );
 

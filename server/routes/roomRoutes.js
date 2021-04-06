@@ -19,7 +19,4 @@ router.put("/room/:roomId", auth, roomController.updateRoom);
 // DELETE /room/:roomId
 router.delete("/room/:roomId", auth, roomController.deleteRoom);
 
-// POST /room/report
-router.post("/room/report", auth, roomController.reportRoom);
-
 module.exports = router;
