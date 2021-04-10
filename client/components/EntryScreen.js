@@ -25,7 +25,7 @@ const EntryScreen = () => {
     attemptAutoLogin();
   }, []);
 
-  return <>{accountId ? <MainTabNavigator /> : <AuthNavigator />}</>;
+  return <>{1 ? <MainTabNavigator /> : <AuthNavigator />}</>;
 };
 
 export default EntryScreen;
