@@ -47,9 +47,9 @@ const LoginScreen = (props) => {
       // SUCCESS - login
       dispatch(login(response.data.token, response.data.accountId));
     } catch (e) {
-      // ERROR - if 404, redirect to signup
-      if (e.response.status === 404) {
-        console.log("404 not found");
+      // ERROR - if 401, redirect to signup
+      if (e.response.status === 401) {
+        console.log("Login failed. Redirecting to signup");
         props.navigation.navigate("Signup");
         return;
       }
@@ -59,7 +59,11 @@ const LoginScreen = (props) => {
   return (
     <SafeAreaView style={styles.screen}>
       <Text style={styles.title}>First at Brown</Text>
-      <Button style= {styles.siginIn} onPress={attemptSignin} title="Google Sign in" />
+      <Button
+        style={styles.siginIn}
+        onPress={attemptSignin}
+        title="Google Sign in"
+      />
     </SafeAreaView>
   );
 };
@@ -79,7 +83,6 @@ const styles = StyleSheet.create({
     color: "black",
   },
   siginIn: {
-    alignItems: "center"
-  }
+    alignItems: "center",
+  },
 });
- 
