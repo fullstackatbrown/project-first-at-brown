@@ -12,8 +12,14 @@ const promptRoutes = require("./routes/promptRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 
+// import cron tasks
+const roomGenerator = require("./utils/roomGeneration")
+roomGenerator.init().then(() => console.log("Setup room generator"))
+
 // create express app
 const app = express();
+
+
 
 // parsing data
 app.use(bodyParser.urlencoded({ extended: false }));

@@ -1,63 +1,59 @@
-require('dotenv').config();
+require('dotenv').config()
 
-const schedule = require('node-schedule');
-const { google } = require('googleapis');
+const schedule = require('node-schedule')
+const {GoogleSpreadsheet} = require('google-spreadsheet')
 
-const auth = new google.auth.GoogleAuth({
-  keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-});
-const sheets = google.sheets({ version: 'v4', auth });
+const INTERVALS = {
+	DAY: "DAY",
+	WEEK: "WEEK",
+	UNUSED: "UNUSED",
+}
+
+const doc = new GoogleSpreadsheet('19SV-3-bjpWGtafXQVVFv2a-kkXhAEau9794Pdh5VVBo')
+
+/**
+ * Initializes google spreadsheet connection
+ * @return {Promise<void>}
+ */
+exports.init = async () => {
+	await doc.useServiceAccountAuth({
+		client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+		private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n'),
+	})
+
+	const dailyRule = new schedule.RecurrenceRule()
+	dailyRule.hour = 0
+	dailyRule.tz = 'Etc/UTC'
+
+	updateRooms(INTERVALS.DAY)
+	schedule.scheduleJob(dailyRule, () => updateRooms(INTERVALS.DAY))
+
+	const weeklyRule = new schedule.RecurrenceRule()
+	weeklyRule.dayOfWeek = 0
+	weeklyRule.tz = 'Etc/UTC'
+
+	schedule.scheduleJob(weeklyRule, () => updateRooms(INTERVALS.WEEK))
+}
+
 
 /**
  * Updates the status of rooms with the given type
- * @see https://docs.google.com/spreadsheets/d/19SV-3-bjpWGtafXQVVFv2a-kkXhAEau9794Pdh5VVBo/edit
  * @param {string} type The type of room to update
  */
-async function updateRooms(type) {
-  try {
-    // Get columns A and B of all rows excluding the header (row 1)
-    const rows = await sheets.spreadsheets.values.get({
-      spreadsheetId: process.env.SPREADSHEET_ID,
-      range: 'A2:B',
-    }).data.values;
+const updateRooms = async (type) => {
+	await doc.loadInfo()
+	console.log("Hey!")
 
-    // Swap `type` <=> 'UNUSED'
-    for (const row of rows) {
-      if (row[0] === type) {
-        row[0] = 'UNUSED';
-      } else if (row[0] === 'UNUSED') {
-        row[0] = type;
-      }
-    }
-
-    // Update columns A and B of all rows excluding the header (row 1)
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: process.env.SPREADSHEET_ID,
-      range: 'A2:B',
-      valueInputOption: 'RAW',
-      requestBody: {
-        range: 'A2:B',
-        values: rows,
-      },
-    });
-  } catch (err) {
-    console.error(`The Sheets API returned an error: ${err}`);
-  }
+	// Get columns A and B of all rows excluding the header (row 1)
+	const sheet = doc.sheetsByIndex[0]
+	const rows = await sheet.getRows()
+	// Swap `type` <=> 'UNUSED'
+	for (let i = 0; i < rows.length; i++) {
+		if (rows[i].status === type) {
+			rows[i].status = INTERVALS.UNUSED
+		} else if (rows[i].status === INTERVALS.UNUSED) {
+			rows[i].status = type
+		}
+	}
+	for (const row of rows) row.save()
 }
-
-const dailyRule = new schedule.RecurrenceRule();
-dailyRule.hour = 0;
-dailyRule.tz = 'Etc/UTC';
-
-schedule.scheduleJob(dailyRule, () => {
-  updateRooms('DAILY');
-});
-
-const weeklyRule = new schedule.RecurrenceRule();
-weeklyRule.dayOfWeek = 0;
-weeklyRule.tz =  'Etc/UTC';
-
-schedule.scheduleJob(weeklyRule, () => {
-  updateRooms('WEEKLY');
-});
