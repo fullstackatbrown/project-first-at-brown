@@ -13,7 +13,7 @@ exports.post = asyncHandler(async (req, res, next) => {
         recipient_id: recipientId,
     });
 
-    res.json(result);
+    res.json({messageId: result.message_id});
 })
 
 
