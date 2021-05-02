@@ -4,7 +4,7 @@ const message = require("../models/message");
 
 exports.post = asyncHandler(async (req, res, next) => {
     const body = req.body.body;
-    const senderId = req.body.senderId;
+    const senderId = req.accountId;
     const recipientId = req.body.recipientId;
 
     const result = await message.create({

@@ -5,7 +5,7 @@ exports.create = async ({ room_id, account_id, body, created_at }) => {
   const promptResponse = await db.oneOrNone(
     `SELECT * FROM prompt_response
         WHERE room_id = $1
-        AND account_id = $2`
+        AND account_id = $2`,
     [room_id, account_id]
   );
 

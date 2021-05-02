@@ -9,15 +9,14 @@ exports.getRooms = asyncHandler(async (_req, res) => {
 
 exports.getRoom = asyncHandler(async (req, res) => {
   const roomId = req.params.roomId;
-
-  const result = await room.read(roomId);
-
-  if (result === null) {
+  const exists = await room.checkExists(roomId);
+  if (exists) {
+    const result = await room.read(roomId);
+    res.json(result);
+  } else {
     res.status(404).json({ message: "room not found" });
     return;
   }
-
-  res.json(result);
 });
 
 exports.createRoom = asyncHandler(async (req, res) => {

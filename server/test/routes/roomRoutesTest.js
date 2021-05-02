@@ -23,19 +23,14 @@ describe('Room Routes', () => {
   });
 
   describe('GET /room/:roomId', () => {
-    it('gets room information', async () => {
+    it('gets room responses, with associated prompt and user information', async () => {
       const jwt = await registerAccount();
       await makeRoom(jwt, "What's your favorite color?", new Date('2021-01-01'))
         .expect(200);
       const res = await request.get('/room/1')
         .set('Authorization', 'Bearer ' + jwt)
         .expect(200);
-
-      const { room_id, prompt } = res.body;
-      expect({ room_id, prompt }).to.eql({
-        room_id: 1,
-        prompt: "What's your favorite color?",
-      });
+      expect(res.body).to.be.empty;
     });
   });
 
@@ -78,10 +73,10 @@ describe('Room Routes', () => {
           expiresAt: new Date(),
         })
         .expect(200);
-      const res = await request.get('/room/1')
+      const res = await request.get('/rooms')
         .set('Authorization', 'Bearer ' + jwt)
         .expect(200);
-      expect(res.body.prompt).to.eql("What is your favorite animal?");
+      expect(res.body[0].prompt).to.eql("What is your favorite animal?");
     });
   });
 
