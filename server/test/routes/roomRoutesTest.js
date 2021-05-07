@@ -30,7 +30,7 @@ describe('Room Routes', () => {
       const res = await request.get('/room/1')
         .set('Authorization', 'Bearer ' + jwt)
         .expect(200);
-      expect(res.body).to.be.empty;
+      expect(res.body.room_id).to.eql(1);
     });
   });
 

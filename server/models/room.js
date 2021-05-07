@@ -1,23 +1,7 @@
 const db = require('../config/db');
 
-exports.checkExists = async (room_id) => {
-  const room = await db.oneOrNone(
-    `SELECT * FROM room WHERE room.room_id = $1`,
-    [room_id]
-  );
-  return room !== null;
-}
-
-exports.read = (room_id) => db.any(
-  `SELECT prompt, prompt_response.*,
-      first_name, last_name, year, picture, concentration, pronouns
-      FROM room
-      INNER JOIN prompt_response
-      ON room.room_id = prompt_response.room_id
-      INNER JOIN account
-      ON prompt_response.account_id = account.account_id
-      WHERE room.room_id = $1
-      ORDER BY prompt_response.created_at DESC`,
+exports.read = (room_id) => db.oneOrNone(
+  `SELECT * FROM room WHERE room.room_id = $1`,
   [room_id]
 );
 
