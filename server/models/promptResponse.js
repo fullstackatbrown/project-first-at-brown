@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-
 exports.read = (room_id) => db.any(
   `SELECT room.prompt, prompt_response.*,
       first_name, last_name, year, picture, concentration, pronouns,
@@ -22,7 +21,7 @@ exports.read = (room_id) => db.any(
 );
 
 // Returns true if created successfully, false otherwise
-exports.create = async ({ room_id, account_id, body, created_at }) => {
+exports.create = async ({ room_id, account_id, body }) => {
   const promptResponse = await db.oneOrNone(
     `SELECT * FROM prompt_response
         WHERE room_id = $1
@@ -32,9 +31,9 @@ exports.create = async ({ room_id, account_id, body, created_at }) => {
 
   if (promptResponse === null) {
     db.none(
-      `INSERT INTO prompt_response (room_id, account_id, body, created_at)
-          VALUES ($1, $2, $3, $4)`,
-      [room_id, account_id, body, created_at]
+      `INSERT INTO prompt_response (room_id, account_id, body)
+          VALUES ($1, $2, $3)`,
+      [room_id, account_id, body]
     );
     return true;
   } else {
@@ -42,11 +41,12 @@ exports.create = async ({ room_id, account_id, body, created_at }) => {
   }
 }
 
-exports.update = ({ room_id, account_id }, { body, created_at }) => db.none(
+exports.update = ({ room_id, account_id, body }) => db.oneOrNone(
   `UPDATE prompt_response
-      SET body = COALESCE($1, body), created_at = COALESCE($2, created_at),
-      WHERE room_id = $3 AND account_id = $4`,
-  [body, created_at, room_id, account_id]
+      SET body = COALESCE($1, body), created_at = DEFAULT,
+      WHERE room_id = $2 AND account_id = $3
+      RETURNING *`,
+  [body, room_id, account_id]
 );
 
 exports.delete = ({ room_id, account_id }) => db.none(
