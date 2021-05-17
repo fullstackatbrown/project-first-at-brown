@@ -1,7 +1,6 @@
 // node imports
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const compression = require("compression");
 
@@ -22,8 +21,8 @@ const app = express();
 
 
 // parsing data
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(helmet()); //set standard http headers for security
 app.use(compression()); // compress data
