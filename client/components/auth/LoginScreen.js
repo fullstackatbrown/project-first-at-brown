@@ -20,7 +20,8 @@ const LoginScreen = (props) => {
       });
 
       if (result.type === "success") {
-        return result.idToken;
+        console.log(result);
+        return result.user.id;
       } else {
         return null;
         // return { cancelled: true };
