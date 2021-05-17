@@ -24,6 +24,13 @@ exports.create = ({ prompt, expires_at }) => db.one(
   [prompt, expires_at]
 );
 
+exports.createInterval = ({ prompt, interval }) => db.one(
+  `INSERT INTO room (prompt, expires_at)
+      VALUES ($1, NOW() + INTERVAL $2)
+      RETURNING room_id`,
+  [prompt, interval]
+);
+
 exports.update = (room_id, { prompt, expires_at }) => db.none(
   `UPDATE room
       SET prompt     = COALESCE($1, prompt),
