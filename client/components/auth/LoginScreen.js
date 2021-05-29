@@ -8,7 +8,7 @@ import config from "../../config";
 import API from "../../api";
 import { login } from "../../redux/actions/auth";
 
-const LoginScreen = (props) => {
+const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const signInWithGoogleAsync = async () => {
@@ -51,7 +51,7 @@ const LoginScreen = (props) => {
       // ERROR - if 401, redirect to signup
       if (e.response.status === 401) {
         console.log("Login failed. Redirecting to signup");
-        props.navigation.navigate("Signup");
+        navigation.navigate("Signup");
         return;
       }
     }
