@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, View, ScrollView } from "react-native";
 import { Avatar, Text, Button, Divider } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
+
 import API from "../../api";
 import { logout } from "../../redux/actions/auth";
 
@@ -10,6 +12,7 @@ const SettingsScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState({});
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   // load user details
   useEffect(() => {
@@ -24,10 +27,14 @@ const SettingsScreen = ({ navigation }) => {
     };
 
     fetchAccountDetails();
-  }, []);
+  }, [isFocused]);
 
   if (isLoading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="gray" />
+      </View>
+    );
   }
 
   return (
@@ -37,7 +44,9 @@ const SettingsScreen = ({ navigation }) => {
           rounded
           size="large"
           source={{
-            uri: "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+            uri:
+              accountDetails.picture ||
+              "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
           }}
         />
         <View style={styles.name}>
