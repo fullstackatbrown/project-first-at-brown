@@ -8,7 +8,7 @@ const compression = require("compression");
 // import routes
 const accountRoutes = require("./routes/accountRoutes");
 const roomRoutes = require("./routes/roomRoutes");
-const promptRoutes = require("./routes/promptRoutes");
+const promptResponseRoutes = require("./routes/promptResponseRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 
@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 // TODO: IMPLEMENT ROUTES
 app.use("/", accountRoutes);
 app.use("/", roomRoutes);
-app.use("/", promptRoutes);
+app.use("/", promptResponseRoutes);
 app.use("/", chatRoutes);
 app.use("/", messageRoutes);
 

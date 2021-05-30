@@ -5,7 +5,7 @@ const promptResponseController = require("../controllers/promptResponseControlle
 const auth = require("../middleware/auth");
 
 // POST /prompt/:roomId
-router.post("prompt/:roomId", auth, promptResponseController.createPromptResponse);
+router.post("/prompt/:roomId", auth, promptResponseController.createPromptResponse);
 
 // PUT /prompt/:roomId
 router.put("/prompt/:roomId", auth, promptResponseController.updatePromptResponse);

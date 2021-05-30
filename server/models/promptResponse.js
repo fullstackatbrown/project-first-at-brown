@@ -43,7 +43,7 @@ exports.create = async ({ room_id, account_id, body }) => {
 
 exports.update = ({ room_id, account_id, body }) => db.oneOrNone(
   `UPDATE prompt_response
-      SET body = COALESCE($1, body), created_at = DEFAULT,
+      SET body = COALESCE($1, body), created_at = DEFAULT
       WHERE room_id = $2 AND account_id = $3
       RETURNING *`,
   [body, room_id, account_id]
@@ -51,7 +51,7 @@ exports.update = ({ room_id, account_id, body }) => db.oneOrNone(
 
 exports.delete = ({ room_id, account_id }) => db.none(
   `DELETE
-      FROM room
+      FROM prompt_response
       WHERE room_id = $1 AND account_id = $2`,
   [room_id, account_id]
 );
