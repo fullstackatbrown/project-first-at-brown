@@ -37,7 +37,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
   });
 
   if (result.error) {
-    res.status(400).json({ error: result.error })
+    res.status(400).json({ error: result.error });
   } else {
     const accountId = result.account_id;
     const jwtoken = jwt.sign({ accountId }, process.env.JWT_KEY);
