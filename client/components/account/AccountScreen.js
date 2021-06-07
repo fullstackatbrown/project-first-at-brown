@@ -48,6 +48,7 @@ const SettingsScreen = ({ navigation }) => {
               accountDetails.picture ||
               "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
           }}
+          placeholderStyle={{ backgroundColor: "transparent" }}
         />
         <View style={styles.name}>
           <Text h3>{accountDetails.first_name}</Text>

@@ -10,15 +10,21 @@ const EditAccountScreen = ({ route, navigation }) => {
   const { accountDetails } = route.params;
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [year, setYear] = useState("");
   const [concentration, setConcentration] = useState("");
   const [pronouns, setPronouns] = useState("");
+  const [introduction, setIntroduction] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
+    setFirstName(accountDetails.first_name);
+    setLastName(accountDetails.last_name);
     setYear(accountDetails.year);
     setConcentration(accountDetails.concentration);
     setPronouns(accountDetails.pronouns);
+    setIntroduction(accountDetails.introduction);
     setIsLoading(false);
   }, []);
 
@@ -27,8 +33,8 @@ const EditAccountScreen = ({ route, navigation }) => {
     await API.put(
       "account",
       {
-        firstName: accountDetails.first_name,
-        lastName: accountDetails.last_name,
+        firstName,
+        lastName,
         picture: accountDetails.picture,
         year,
         concentration,
@@ -52,7 +58,7 @@ const EditAccountScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView style={styles.screen}>
-      <View style={styles.pictureNameDisplay}>
+      <View style={styles.avatar}>
         <Avatar
           rounded
           size="large"
@@ -61,11 +67,26 @@ const EditAccountScreen = ({ route, navigation }) => {
               accountDetails.picture ||
               "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
           }}
+          placeholderStyle={{ backgroundColor: "transparent" }}
         />
-        <View style={styles.name}>
-          <Text h3>{accountDetails.first_name}</Text>
-          <Text h3>{accountDetails.last_name}</Text>
-        </View>
+      </View>
+      <View style={styles.section}>
+        <Input
+          label="First Name"
+          value={firstName}
+          onChangeText={(value) => {
+            setFirstName(value);
+          }}
+        />
+      </View>
+      <View style={styles.section}>
+        <Input
+          label="LastName"
+          value={lastName}
+          onChangeText={(value) => {
+            setLastName(value);
+          }}
+        />
       </View>
       <View style={styles.section}>
         <Input
@@ -94,6 +115,16 @@ const EditAccountScreen = ({ route, navigation }) => {
           }}
         />
       </View>
+      <View style={styles.section}>
+        <Input
+          label="Introduction"
+          value={introduction}
+          onChangeText={(value) => {
+            setIntroduction(value);
+          }}
+          multiline={true}
+        />
+      </View>
       <Divider style={styles.section} />
       <View style={styles.section}>
         <Button
@@ -119,9 +150,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  pictureNameDisplay: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+  avatar: {
+    alignSelf: "center",
   },
   name: {
     justifyContent: "space-around",
