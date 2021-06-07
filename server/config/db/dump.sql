@@ -37,8 +37,6 @@ CREATE TABLE message
     created_at   TIMESTAMP DEFAULT NOW() NOT NULL
 );
 
-
-
 CREATE TABLE prompt_response
 (
     room_id    INTEGER   NOT NULL,

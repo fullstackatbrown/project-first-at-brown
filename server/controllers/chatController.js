@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 
-// import models
 const chat = require("../models/chat");
 
 exports.getChats = asyncHandler(async (req, res, next) => {

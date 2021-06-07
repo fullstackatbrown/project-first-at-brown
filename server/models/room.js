@@ -1,9 +1,7 @@
 const db = require('../config/db');
 
 exports.read = (room_id) => db.oneOrNone(
-  `SELECT *
-      FROM room
-      WHERE room_id = $1`,
+  `SELECT * FROM room WHERE room.room_id = $1`,
   [room_id]
 );
 

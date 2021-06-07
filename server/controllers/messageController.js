@@ -2,9 +2,9 @@ const asyncHandler = require("express-async-handler");
 
 const message = require("../models/message");
 
-exports.post = asyncHandler(async (req, res, next) => {
+exports.post = asyncHandler(async (req, res) => {
     const body = req.body.body;
-    const senderId = req.body.senderId;
+    const senderId = req.accountId;
     const recipientId = req.body.recipientId;
 
     const result = await message.create({
@@ -13,7 +13,5 @@ exports.post = asyncHandler(async (req, res, next) => {
         recipient_id: recipientId,
     });
 
-    res.json(result);
+    res.json({messageId: result.message_id});
 })
-
-
