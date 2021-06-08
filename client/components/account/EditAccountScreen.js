@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View, ScrollView } from "react-native";
-import { Avatar, Text, Button, Divider, Input } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Avatar, Button, Divider, Input } from "react-native-elements";
+import { useSelector } from "react-redux";
 import API from "../../api";
-import { logout } from "../../redux/actions/auth";
 
 const EditAccountScreen = ({ route, navigation }) => {
-  const { accountId, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const { accountDetails } = route.params;
-  const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [year, setYear] = useState("");
-  const [concentration, setConcentration] = useState("");
-  const [pronouns, setPronouns] = useState("");
-  const [introduction, setIntroduction] = useState("");
-
-  useEffect(() => {
-    setIsLoading(true);
-    setFirstName(accountDetails.first_name);
-    setLastName(accountDetails.last_name);
-    setYear(accountDetails.year);
-    setConcentration(accountDetails.concentration);
-    setPronouns(accountDetails.pronouns);
-    setIntroduction(accountDetails.introduction);
-    setIsLoading(false);
-  }, []);
+  const [firstName, setFirstName] = useState(accountDetails.first_name);
+  const [lastName, setLastName] = useState(accountDetails.last_name);
+  const [year, setYear] = useState(accountDetails.year);
+  const [concentration, setConcentration] = useState(
+    accountDetails.concentration
+  );
+  const [pronouns, setPronouns] = useState(accountDetails.pronouns);
+  const [introduction, setIntroduction] = useState(accountDetails.introduction);
 
   const onSubmitHandler = async () => {
     setIsSending(true);
@@ -35,7 +24,7 @@ const EditAccountScreen = ({ route, navigation }) => {
       {
         firstName,
         lastName,
-        picture: accountDetails.picture,
+        picture: accountDetails.picture || "",
         year,
         concentration,
         pronouns,
@@ -47,14 +36,6 @@ const EditAccountScreen = ({ route, navigation }) => {
     setIsSending(false);
     navigation.navigate("Account");
   };
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="gray" />
-      </View>
-    );
-  }
 
   return (
     <ScrollView style={styles.screen}>

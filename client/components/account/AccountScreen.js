@@ -7,7 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import API from "../../api";
 import { logout } from "../../redux/actions/auth";
 
-const SettingsScreen = ({ navigation }) => {
+const AccountScreen = ({ navigation }) => {
   const { accountId, token } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState({});
@@ -21,7 +21,6 @@ const SettingsScreen = ({ navigation }) => {
       const response = await API.get(`account/${accountId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data);
       setAccountDetails(response.data);
       setIsLoading(false);
     };
@@ -102,7 +101,7 @@ const SettingsScreen = ({ navigation }) => {
   );
 };
 
-export default SettingsScreen;
+export default AccountScreen;
 
 const styles = StyleSheet.create({
   screen: {
