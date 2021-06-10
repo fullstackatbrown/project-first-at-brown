@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import Test from "./TestScreen";
+import MainTabNavigator from "../navigation/MainTabNavigator";
 import AuthNavigator from "../navigation/AuthNavigator";
 import { autoLogin } from "../redux/actions/auth";
 
@@ -25,7 +25,7 @@ const EntryScreen = () => {
     attemptAutoLogin();
   }, []);
 
-  return <>{accountId ? <Test /> : <AuthNavigator />}</>;
+  return <>{accountId ? <MainTabNavigator /> : <AuthNavigator />}</>;
 };
 
 export default EntryScreen;
