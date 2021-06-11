@@ -19,9 +19,10 @@ exports.signup = asyncHandler(async (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const year = req.body.year;
-  const concentration = req.body.concentration;
   const picture = ""; // TODO: upload or url?
+  const concentration = req.body.concentration;
   const pronouns = req.body.pronouns;
+  const bio = req.body.bio;
   const email = req.body.email;
   const token = req.body.token;
 
@@ -29,11 +30,12 @@ exports.signup = asyncHandler(async (req, res, next) => {
     first_name: firstName,
     last_name: lastName,
     year,
+    picture,
     concentration,
     pronouns,
+    bio,
     email,
     token,
-    picture,
   });
 
   if (result.error) {
@@ -59,6 +61,7 @@ exports.update = asyncHandler(async (req, res, next) => {
   const picture = req.body.picture;
   const concentration = req.body.concentration;
   const pronouns = req.body.pronouns;
+  const bio = req.body.bio;
 
   const result = await account.update(accountId, {
     first_name: firstName,
@@ -67,6 +70,7 @@ exports.update = asyncHandler(async (req, res, next) => {
     picture,
     concentration,
     pronouns,
+    bio,
   });
 
   res.json(result);

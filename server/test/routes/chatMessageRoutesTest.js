@@ -15,6 +15,7 @@ describe('Chat and Message Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe1@brown.edu",
           token: "abc1234",
         })
@@ -40,6 +41,7 @@ describe('Chat and Message Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe1@brown.edu",
           token: "abc1234",
         })
@@ -81,6 +83,7 @@ describe('Chat and Message Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe1@brown.edu",
           token: "abc1234",
         })

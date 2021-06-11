@@ -38,6 +38,7 @@ exports.list = async (account_id) => {
         picture: partnerAccount.picture,
         concentration: partnerAccount.concentration,
         pronouns: partnerAccount.pronouns,
+        bio: partnerAccount.bio,
         messages: []
       };
     }
