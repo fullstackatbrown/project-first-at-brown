@@ -2,7 +2,7 @@ const db = require('../config/db');
 
 exports.read = (room_id) => db.any(
   `SELECT room.prompt, prompt_response.*,
-      first_name, last_name, year, picture, concentration, pronouns,
+      first_name, last_name, year, picture, concentration, pronouns, bio,
       COUNT(prompt_response_report.reporter_account_id) AS num_reports
       FROM room
       INNER JOIN prompt_response
@@ -15,7 +15,7 @@ exports.read = (room_id) => db.any(
       WHERE room.room_id = $1
       GROUP BY prompt_response_room_id, prompt_response_account_id, room.prompt,
       prompt_response.room_id, prompt_response.account_id, prompt_response.body, prompt_response.created_at,
-      first_name, last_name, year, picture, concentration, pronouns
+      first_name, last_name, year, picture, concentration, pronouns, bio
       ORDER BY prompt_response.created_at DESC`,
   [room_id]
 );

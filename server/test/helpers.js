@@ -18,6 +18,7 @@ global.registerAccount = async () => {
       year: "2025",
       concentration: "Computer Science",
       pronouns: "she/her/hers",
+      bio: "Swimmer, baker, and pianist",
       email: "jane_doe@brown.edu",
       token: "abc123",
     });

@@ -15,6 +15,7 @@ exports.create = async ({
   picture,
   concentration,
   pronouns,
+  bio,
   token,
   email,
 }) => {
@@ -33,8 +34,8 @@ exports.create = async ({
   }
 
   return db.one(
-    `INSERT INTO account (first_name, last_name, year, picture, concentration, pronouns, token, email)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `INSERT INTO account (first_name, last_name, year, picture, concentration, pronouns, bio, token, email)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING account_id`,
     [
       first_name,
@@ -43,6 +44,7 @@ exports.create = async ({
       picture,
       concentration,
       pronouns,
+      bio,
       token,
       email,
     ]
@@ -59,7 +61,7 @@ exports.read = (account_id) =>
 
 exports.update = (
   account_id,
-  { first_name, last_name, year, picture, concentration, pronouns }
+  { first_name, last_name, year, picture, concentration, pronouns, bio }
 ) =>
   db.none(
     `UPDATE account
@@ -68,9 +70,10 @@ exports.update = (
           year          = COALESCE($3, year),
           picture       = COALESCE($4, picture),
           concentration = COALESCE($5, concentration),
-          pronouns      = COALESCE($6, pronouns)
-      WHERE account_id  = $7`,
-    [first_name, last_name, year, picture, concentration, pronouns, account_id]
+          pronouns      = COALESCE($6, pronouns),
+          bio           = COALESCE($7, bio)
+      WHERE account_id  = $8`,
+    [first_name, last_name, year, picture, concentration, pronouns, bio, account_id]
   );
 
 exports.delete = (account_id) =>

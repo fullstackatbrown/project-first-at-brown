@@ -22,6 +22,7 @@ describe('Account Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe@brown.edu",
           token: "abc123",
         })
@@ -34,6 +35,7 @@ describe('Account Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe@brown.edu",
           token: "abc1234",
         })
@@ -46,6 +48,7 @@ describe('Account Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe1@brown.edu",
           token: "abc123",
         })
@@ -110,6 +113,7 @@ describe('Account Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe1@brown.edu",
           token: "abc1234",
         })
@@ -121,6 +125,7 @@ describe('Account Routes', () => {
           year: "2025",
           concentration: "Computer Science",
           pronouns: "she/her/hers",
+          bio: "Swimmer, baker, and pianist",
           email: "jane_doe2@brown.edu",
           token: "abc12345",
         })
