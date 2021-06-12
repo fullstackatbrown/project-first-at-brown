@@ -15,7 +15,7 @@ const EditAccountScreen = ({ route, navigation }) => {
     accountDetails.concentration
   );
   const [pronouns, setPronouns] = useState(accountDetails.pronouns);
-  const [introduction, setIntroduction] = useState(accountDetails.introduction);
+  const [introduction, setIntroduction] = useState(accountDetails.bio);
 
   const onSubmitHandler = async () => {
     setIsSending(true);
@@ -28,6 +28,7 @@ const EditAccountScreen = ({ route, navigation }) => {
         year,
         concentration,
         pronouns,
+        bio: introduction,
       },
       {
         headers: { Authorization: `Bearer ${token}` },

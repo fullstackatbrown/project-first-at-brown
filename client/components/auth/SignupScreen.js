@@ -29,6 +29,7 @@ const SignupScreen = ({ route }) => {
         year,
         concentration,
         pronouns,
+        bio: introduction,
         token: userData.id,
         email: userData.email,
       });

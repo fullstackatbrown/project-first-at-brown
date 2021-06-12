@@ -68,9 +68,7 @@ const AccountScreen = ({ navigation }) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>Introduction</Text>
-        <Text style={styles.content}>
-          Are we still doing introductions? (not in schema)
-        </Text>
+        <Text style={styles.content}>{accountDetails.bio}</Text>
       </View>
       <Divider style={styles.section} />
       <View style={styles.section}>
