@@ -20,8 +20,7 @@ const LoginScreen = ({ navigation }) => {
       });
 
       if (result.type === "success") {
-        console.log(result);
-        return result.user.id;
+        return result.user;
       } else {
         return null;
         // return { cancelled: true };
@@ -33,16 +32,17 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const attemptSignin = async () => {
-    const token = await signInWithGoogleAsync();
-    if (!token) {
+    const userData = await signInWithGoogleAsync();
+    if (!userData) {
       // error or cancelled
       return;
     }
+    console.log(userData);
 
     try {
       // attempt login
       const response = await API.post("account/login", {
-        token,
+        token: userData.id,
       });
 
       // SUCCESS - login
@@ -51,7 +51,7 @@ const LoginScreen = ({ navigation }) => {
       // ERROR - if 401, redirect to signup
       if (e.response.status === 401) {
         console.log("Login failed. Redirecting to signup");
-        navigation.navigate("Signup");
+        navigation.navigate("Signup", { userData });
         return;
       }
     }

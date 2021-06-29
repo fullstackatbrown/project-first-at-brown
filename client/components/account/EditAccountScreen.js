@@ -1,38 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View, ScrollView } from "react-native";
-import { Avatar, Text, Button, Divider, Input } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Avatar, Button, Divider, Input } from "react-native-elements";
+import { useSelector } from "react-redux";
 import API from "../../api";
-import { logout } from "../../redux/actions/auth";
 
 const EditAccountScreen = ({ route, navigation }) => {
-  const { accountId, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const { accountDetails } = route.params;
-  const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [year, setYear] = useState("");
-  const [concentration, setConcentration] = useState("");
-  const [pronouns, setPronouns] = useState("");
-
-  useEffect(() => {
-    setIsLoading(true);
-    setYear(accountDetails.year);
-    setConcentration(accountDetails.concentration);
-    setPronouns(accountDetails.pronouns);
-    setIsLoading(false);
-  }, []);
+  const [firstName, setFirstName] = useState(accountDetails.first_name);
+  const [lastName, setLastName] = useState(accountDetails.last_name);
+  const [year, setYear] = useState(accountDetails.year);
+  const [concentration, setConcentration] = useState(
+    accountDetails.concentration
+  );
+  const [pronouns, setPronouns] = useState(accountDetails.pronouns);
+  const [introduction, setIntroduction] = useState(accountDetails.bio);
 
   const onSubmitHandler = async () => {
     setIsSending(true);
     await API.put(
       "account",
       {
-        firstName: accountDetails.first_name,
-        lastName: accountDetails.last_name,
-        picture: accountDetails.picture,
+        firstName,
+        lastName,
+        picture: accountDetails.picture || "",
         year,
         concentration,
         pronouns,
+        bio: introduction,
       },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -42,17 +38,9 @@ const EditAccountScreen = ({ route, navigation }) => {
     navigation.navigate("Account");
   };
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="gray" />
-      </View>
-    );
-  }
-
   return (
     <ScrollView style={styles.screen}>
-      <View style={styles.pictureNameDisplay}>
+      <View style={styles.avatar}>
         <Avatar
           rounded
           size="large"
@@ -61,11 +49,26 @@ const EditAccountScreen = ({ route, navigation }) => {
               accountDetails.picture ||
               "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
           }}
+          placeholderStyle={{ backgroundColor: "transparent" }}
         />
-        <View style={styles.name}>
-          <Text h3>{accountDetails.first_name}</Text>
-          <Text h3>{accountDetails.last_name}</Text>
-        </View>
+      </View>
+      <View style={styles.section}>
+        <Input
+          label="First Name"
+          value={firstName}
+          onChangeText={(value) => {
+            setFirstName(value);
+          }}
+        />
+      </View>
+      <View style={styles.section}>
+        <Input
+          label="LastName"
+          value={lastName}
+          onChangeText={(value) => {
+            setLastName(value);
+          }}
+        />
       </View>
       <View style={styles.section}>
         <Input
@@ -94,6 +97,16 @@ const EditAccountScreen = ({ route, navigation }) => {
           }}
         />
       </View>
+      <View style={styles.section}>
+        <Input
+          label="Introduction"
+          value={introduction}
+          onChangeText={(value) => {
+            setIntroduction(value);
+          }}
+          multiline={true}
+        />
+      </View>
       <Divider style={styles.section} />
       <View style={styles.section}>
         <Button
@@ -119,9 +132,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  pictureNameDisplay: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+  avatar: {
+    alignSelf: "center",
   },
   name: {
     justifyContent: "space-around",

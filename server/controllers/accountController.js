@@ -19,7 +19,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const year = req.body.year;
-  const picture = ""; // TODO: upload or url?
+  const picture = req.body.picture;
   const concentration = req.body.concentration;
   const pronouns = req.body.pronouns;
   const bio = req.body.bio;

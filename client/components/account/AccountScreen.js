@@ -7,7 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import API from "../../api";
 import { logout } from "../../redux/actions/auth";
 
-const SettingsScreen = ({ navigation }) => {
+const AccountScreen = ({ navigation }) => {
   const { accountId, token } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState({});
@@ -21,7 +21,6 @@ const SettingsScreen = ({ navigation }) => {
       const response = await API.get(`account/${accountId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log(response.data);
       setAccountDetails(response.data);
       setIsLoading(false);
     };
@@ -48,6 +47,7 @@ const SettingsScreen = ({ navigation }) => {
               accountDetails.picture ||
               "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
           }}
+          placeholderStyle={{ backgroundColor: "transparent" }}
         />
         <View style={styles.name}>
           <Text h3>{accountDetails.first_name}</Text>
@@ -68,9 +68,7 @@ const SettingsScreen = ({ navigation }) => {
       </View>
       <View style={styles.section}>
         <Text style={styles.label}>Introduction</Text>
-        <Text style={styles.content}>
-          Are we still doing introductions? (not in schema)
-        </Text>
+        <Text style={styles.content}>{accountDetails.bio}</Text>
       </View>
       <Divider style={styles.section} />
       <View style={styles.section}>
@@ -101,7 +99,7 @@ const SettingsScreen = ({ navigation }) => {
   );
 };
 
-export default SettingsScreen;
+export default AccountScreen;
 
 const styles = StyleSheet.create({
   screen: {
