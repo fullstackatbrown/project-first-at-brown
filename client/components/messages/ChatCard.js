@@ -1,25 +1,36 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { Avatar, Text } from "react-native-elements";
 
-const ChatCard = ({ chatData }) => {
+const ChatCard = ({ chatData, navigation }) => {
   return (
-    <View style={styles.card}>
-      <Avatar
-        rounded
-        size="large"
-        source={{
-          uri:
-            chatData.picture ||
-            "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
-        }}
-        placeholderStyle={{ backgroundColor: "transparent" }}
-      />
-      <View style={styles.description}>
-        <Text h4>{chatData.firstName}</Text>
-        <Text style={styles.message}>{chatData.messages[0].body}</Text>
+    <Pressable
+      onPress={() => {
+        navigation.navigate("Chat", {
+          recipientId: chatData.accountId,
+          recipientName: chatData.firstName,
+        });
+      }}
+    >
+      <View style={styles.card}>
+        <Avatar
+          rounded
+          size="large"
+          source={{
+            uri:
+              chatData.picture ||
+              "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+          }}
+          placeholderStyle={{ backgroundColor: "transparent" }}
+        />
+        <View style={styles.description}>
+          <Text h4>{chatData.firstName}</Text>
+          <Text style={styles.message} numberOfLines={1}>
+            {chatData.messages[0].body}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

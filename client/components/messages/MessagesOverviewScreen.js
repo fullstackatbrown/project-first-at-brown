@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import API from "../../api";
 import ChatCard from "./ChatCard";
 
-const MessagesOverviewScreen = () => {
+const MessagesOverviewScreen = ({ navigation }) => {
   const { token } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -32,7 +32,7 @@ const MessagesOverviewScreen = () => {
   };
 
   const renderChat = ({ item }) => {
-    return <ChatCard chatData={item} />;
+    return <ChatCard chatData={item} navigation={navigation} />;
   };
 
   useEffect(() => {
