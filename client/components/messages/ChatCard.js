@@ -9,6 +9,7 @@ const ChatCard = ({ chatData, navigation }) => {
         navigation.navigate("Chat", {
           recipientId: chatData.accountId,
           recipientName: chatData.firstName,
+          recipientPicture: chatData.picture,
         });
       }}
     >
