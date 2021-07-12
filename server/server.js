@@ -12,6 +12,9 @@ const promptResponseRoutes = require("./routes/promptResponseRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 
+// import sockets
+const registerMessagingHandler = require("./socket/messagingHandler");
+
 // create express app
 const app = express();
 
@@ -36,7 +39,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// TODO: IMPLEMENT ROUTES
 app.use("/", accountRoutes);
 app.use("/", roomRoutes);
 app.use("/", promptResponseRoutes);
@@ -52,11 +54,28 @@ app.use("/", (req, res, next) => {
 app.use((err, req, res, next) => {
   const status = err.statusCode || 500;
   const message = err.message;
-  console.error(err)
+  console.error(err);
   res.status(status).json({ message });
 });
 
 // start server
-app.listen(process.env.PORT || 3000);
+const server = app.listen(process.env.PORT || 3000);
+const io = require("socket.io")(server);
+
+io.use((socket, next) => {
+  const accountId = socket.handshake.auth.accountId;
+  if (!accountId) {
+    const error = new Error("Unauthorized");
+    error.statusCode = 401;
+    throw error;
+  }
+  socket.accountId = accountId;
+  next();
+});
+
+io.on("connection", (socket) => {
+  console.log("connected");
+  registerMessagingHandler(io, socket);
+});
 
 module.exports = app;

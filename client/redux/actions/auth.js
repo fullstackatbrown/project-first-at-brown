@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LOGIN, LOGOUT, SIGNUP } from "./types";
+import socket from "../../socket";
 
 import API from "../../api";
 
@@ -35,6 +36,9 @@ export const signup = () => {
 
 export const login = (token, accountId) => {
   return async (dispatch) => {
+    socket.auth = { accountId };
+    socket.connect();
+
     // store user data in async storage
     await AsyncStorage.setItem(
       "@account",
@@ -53,6 +57,9 @@ export const login = (token, accountId) => {
 
 export const autoLogin = (token, accountId) => {
   return (dispatch) => {
+    socket.auth = { accountId };
+    socket.connect();
+
     dispatch({
       type: LOGIN,
       payload: { token, accountId },
