@@ -21,7 +21,6 @@ const MessagesOverviewScreen = ({ navigation }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    console.log(response.data.chats);
     setChats(response.data.chats);
   };
 

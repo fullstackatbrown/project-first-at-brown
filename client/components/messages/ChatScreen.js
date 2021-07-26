@@ -38,7 +38,6 @@ const ChatScreen = ({ route, navigation }) => {
         },
       });
 
-      console.log(response.data);
       setMessages(response.data.messages);
     };
 

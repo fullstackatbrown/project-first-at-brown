@@ -37,7 +37,6 @@ const LoginScreen = ({ navigation }) => {
       // error or cancelled
       return;
     }
-    console.log(userData);
 
     try {
       // attempt login
