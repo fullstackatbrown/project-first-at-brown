@@ -61,20 +61,9 @@ app.use((err, req, res, next) => {
 // start server
 const server = app.listen(process.env.PORT || 3000);
 const io = require("socket.io")(server);
-
-io.use((socket, next) => {
-  const accountId = socket.handshake.auth.accountId;
-  if (!accountId) {
-    const error = new Error("Unauthorized");
-    error.statusCode = 401;
-    throw error;
-  }
-  socket.accountId = accountId;
-  next();
-});
+app.set("socketio", io);
 
 io.on("connection", (socket) => {
-  console.log("connected");
   registerMessagingHandler(io, socket);
 });
 

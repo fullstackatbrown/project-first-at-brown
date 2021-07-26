@@ -1,14 +1,22 @@
+const connectedAccounts = {};
+
 const messagingHandler = (io, socket) => {
-  const createOrder = (payload) => {
-    // ...
-  };
+  // setup
+  const accountId = socket.handshake.auth.accountId;
+  if (!accountId) {
+    const error = new Error("Unauthorized");
+    error.statusCode = 401;
+    throw error;
+  }
+  socket.accountId = accountId;
+  connectedAccounts[accountId] = socket;
+  console.log("connected", accountId);
 
-  const readOrder = (orderId, callback) => {
-    // ...
-  };
-
-  socket.on("order:create", createOrder);
-  socket.on("order:read", readOrder);
+  // when disconnect
+  socket.on("disconnect", () => {
+    console.log("disconnected", accountId);
+    delete connectedAccounts[socket.accountId];
+  });
 };
 
 module.exports = messagingHandler;
