@@ -1,8 +1,9 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
-exports.create = ({ body, sender_id, recipient_id }) => db.one(
-  `INSERT INTO message (body, sender_id, recipient_id)
+exports.create = ({ body, sender_id, recipient_id }) =>
+  db.one(
+    `INSERT INTO message (body, sender_id, recipient_id)
       VALUES ($1, $2, $3)
-      RETURNING message_id`,
-  [body, sender_id, recipient_id]
-);
+      RETURNING *`,
+    [body, sender_id, recipient_id]
+  );

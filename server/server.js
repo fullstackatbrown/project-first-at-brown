@@ -13,7 +13,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 
 // import sockets
-const registerMessagingHandler = require("./socket/messagingHandler");
+const { registerMessagingHandler } = require("./socket/messagingHandler");
 
 // create express app
 const app = express();

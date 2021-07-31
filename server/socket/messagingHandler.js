@@ -1,7 +1,6 @@
 const connectedAccounts = {};
 
-const messagingHandler = (io, socket) => {
-  // setup
+const registerMessagingHandler = (io, socket) => {
   const accountId = socket.handshake.auth.accountId;
   if (!accountId) {
     const error = new Error("Unauthorized");
@@ -19,4 +18,10 @@ const messagingHandler = (io, socket) => {
   });
 };
 
-module.exports = messagingHandler;
+const emitMessage = (accountId, data) => {
+  if (connectedAccounts.hasOwnProperty(accountId)) {
+    connectedAccounts[accountId].emit("message", data);
+  }
+};
+
+module.exports = { registerMessagingHandler, emitMessage };

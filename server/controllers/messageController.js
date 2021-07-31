@@ -1,9 +1,9 @@
 const asyncHandler = require("express-async-handler");
 
 const message = require("../models/message");
+const { emitMessage } = require("../socket/messagingHandler");
 
 exports.post = asyncHandler(async (req, res) => {
-  const io = req.app.get("socketio");
   const body = req.body.body;
   const senderId = req.accountId;
   const recipientId = req.body.recipientId;
@@ -14,5 +14,7 @@ exports.post = asyncHandler(async (req, res) => {
     recipient_id: recipientId,
   });
 
-  res.json({ messageId: result.message_id });
+  emitMessage(recipientId, result);
+
+  res.json(result);
 });

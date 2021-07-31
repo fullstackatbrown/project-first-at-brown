@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import { useSelector } from "react-redux";
-import { Input } from "react-native-elements";
+import socket from "../../socket";
 
 import API from "../../api";
 import OtherUserMessage from "./OtherUserMessage";
@@ -23,32 +23,45 @@ const ChatScreen = ({ route, navigation }) => {
   };
 
   const sendMessage = async () => {
-    const response = API.post(
+    if (!messageToSend) {
+      return;
+    }
+
+    const response = await API.post(
       "message",
       { body: messageToSend, recipientId },
       { headers: { Authorization: `Bearer ${token}` } }
     );
+    setMessageToSend("");
+    setMessages([response.data, ...messages]);
   };
 
   useEffect(() => {
+    // LOAD MESSAGES
     const fetchMessages = async () => {
       const response = await API.get(`chat?recipientId=${recipientId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
       setMessages(response.data.messages);
     };
 
     fetchMessages();
   }, []);
 
+  // SET UP SOCKET
+  useEffect(() => {
+    socket.on("message", (data) => {
+      setMessages([data, ...messages]);
+    });
+  }, [messages]);
+
   return (
     <View style={styles.screen}>
       <FlatList
         inverted
-        keyExtractor={(item) => item.message_id}
+        keyExtractor={(item) => item.message_id.toString()}
         data={messages}
         renderItem={renderChatMessage}
       />
@@ -59,6 +72,7 @@ const ChatScreen = ({ route, navigation }) => {
           onChangeText={(message) => setMessageToSend(message)}
           placeholder="Message"
           onSubmitEditing={sendMessage}
+          blurOnSubmit={false}
         />
       </View>
     </View>
