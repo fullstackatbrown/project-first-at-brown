@@ -31,7 +31,7 @@ exports.getRoom = asyncHandler(async (req, res) => {
       userResponse = response;
       response.report_threshold_exceeded = (numReports >= reportThreshold);
     } else if (numReports < reportThreshold) {
-      otherResponses.append(response);
+      otherResponses.push(response);
     }
   }
 
