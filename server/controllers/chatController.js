@@ -10,7 +10,7 @@ exports.getChats = asyncHandler(async (req, res, next) => {
 });
 
 exports.getChat = asyncHandler(async (req, res, next) => {
-  const recipientId = req.body.recipientId;
+  const recipientId = req.query.recipientId;
 
   const result = await chat.read({
     account_id1: req.accountId,
