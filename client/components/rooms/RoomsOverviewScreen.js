@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  ActivityIndicator,
-} from "react-native";
-import { useSelector } from "react-redux";
-import API from "../../api";
-import RoomCard from "./RoomCard";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { useSelector } from 'react-redux';
+import API from '../../api';
+import RoomCard from './RoomCard';
 
 const RoomsOverviewScreen = ({ navigation }) => {
   const { token } = useSelector((state) => state.auth);
@@ -16,7 +11,7 @@ const RoomsOverviewScreen = ({ navigation }) => {
   const [rooms, setRooms] = useState([]);
 
   const fetchRooms = async () => {
-    const response = await API.get("/rooms", {
+    const response = await API.get('/rooms', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -30,7 +25,7 @@ const RoomsOverviewScreen = ({ navigation }) => {
   };
 
   const renderRoom = ({ item }) => {
-    return <RoomCard roomData={item} navigation={navigation}/>;
+    return <RoomCard roomData={item} navigation={navigation} />;
   };
 
   useEffect(() => {
@@ -45,7 +40,7 @@ const RoomsOverviewScreen = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="gray" />
       </View>
     );

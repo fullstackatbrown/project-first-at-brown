@@ -1,10 +1,10 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import MessagesNavigator from "./MessagesNavigator";
-import RoomsNavigator from "./RoomsNavigator";
-import AccountNavigator from "./AccountNavigator";
+import MessagesNavigator from './MessagesNavigator';
+import RoomsNavigator from './RoomsNavigator';
+import AccountNavigator from './AccountNavigator';
 
 const Tab = createBottomTabNavigator();
 

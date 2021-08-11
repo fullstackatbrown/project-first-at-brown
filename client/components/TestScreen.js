@@ -1,8 +1,8 @@
-import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
-import { useDispatch } from "react-redux";
-import { logout } from "../redux/actions/auth";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { logout } from '../redux/actions/auth';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TestScreen = () => {
   const dispatch = useDispatch();

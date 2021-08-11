@@ -1,6 +1,6 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const chat = require("../models/chat");
+const chat = require('../models/chat');
 
 exports.getChats = asyncHandler(async (req, res, next) => {
   const result = await chat.list(req.accountId);

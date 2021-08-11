@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
-const account = require("../models/account");
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+const account = require('../models/account');
 
 exports.login = asyncHandler(async (req, res, next) => {
   const token = req.body.token;
   const result = await account.login(token);
   if (result == null) {
-    res.status(401).json({ error: "Invalid credential" });
+    res.status(401).json({ error: 'Invalid credential' });
   } else {
     const accountId = result.account_id;
     // create jwt

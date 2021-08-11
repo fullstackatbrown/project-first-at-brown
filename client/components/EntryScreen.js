@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import MainTabNavigator from "../navigation/MainTabNavigator";
-import AuthNavigator from "../navigation/AuthNavigator";
-import { autoLogin, logout } from "../redux/actions/auth";
+import MainTabNavigator from '../navigation/MainTabNavigator';
+import AuthNavigator from '../navigation/AuthNavigator';
+import { autoLogin, logout } from '../redux/actions/auth';
 
 const EntryScreen = () => {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const EntryScreen = () => {
   useEffect(() => {
     const attemptAutoLogin = async () => {
       // check if user data is stored
-      const accountData = await AsyncStorage.getItem("@account");
+      const accountData = await AsyncStorage.getItem('@account');
       if (accountData) {
         const accountDataJSON = JSON.parse(accountData);
         dispatch(autoLogin(accountDataJSON.token, accountDataJSON.accountId));

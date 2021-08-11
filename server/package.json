@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "test": "POSTGRES_DATABASE=test NODE_ENV=test mocha test/**/*.js"
+    "test": "POSTGRES_DATABASE=test NODE_ENV=test mocha test/**/*.js",
+    "lint": "eslint --fix . && echo 'Lint complete.'"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +25,9 @@
   },
   "devDependencies": {
     "chai": "^4.3.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "mocha": "^8.3.1",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3"

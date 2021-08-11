@@ -1,19 +1,19 @@
 // node imports
-require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const helmet = require("helmet");
-const compression = require("compression");
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const compression = require('compression');
 
 // import routes
-const accountRoutes = require("./routes/accountRoutes");
-const roomRoutes = require("./routes/roomRoutes");
-const promptResponseRoutes = require("./routes/promptResponseRoutes");
-const chatRoutes = require("./routes/chatRoutes");
-const messageRoutes = require("./routes/messageRoutes");
+const accountRoutes = require('./routes/accountRoutes');
+const roomRoutes = require('./routes/roomRoutes');
+const promptResponseRoutes = require('./routes/promptResponseRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 
 // import sockets
-const { registerMessagingHandler } = require("./socket/messagingHandler");
+const { registerMessagingHandler } = require('./socket/messagingHandler');
 
 // create express app
 const app = express();
@@ -27,27 +27,27 @@ app.use(compression()); // compress data
 
 // add header to all responses - allow CORS
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE"
+    'Access-Control-Allow-Methods',
+    'GET, POST, PUT, PATCH, DELETE'
   );
   res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
   next();
 });
 
-app.use("/", accountRoutes);
-app.use("/", roomRoutes);
-app.use("/", promptResponseRoutes);
-app.use("/", chatRoutes);
-app.use("/", messageRoutes);
+app.use('/', accountRoutes);
+app.use('/', roomRoutes);
+app.use('/', promptResponseRoutes);
+app.use('/', chatRoutes);
+app.use('/', messageRoutes);
 
 // route not found
-app.use("/", (req, res, next) => {
-  res.status(404).json({ message: "route not found" });
+app.use('/', (req, res, next) => {
+  res.status(404).json({ message: 'route not found' });
 });
 
 // handling errors
@@ -60,10 +60,10 @@ app.use((err, req, res, next) => {
 
 // start server
 const server = app.listen(process.env.PORT || 3000);
-const io = require("socket.io")(server);
-app.set("socketio", io);
+const io = require('socket.io')(server);
+app.set('socketio', io);
 
-io.on("connection", (socket) => {
+io.on('connection', (socket) => {
   registerMessagingHandler(io, socket);
 });
 

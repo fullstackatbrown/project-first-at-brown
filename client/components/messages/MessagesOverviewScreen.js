@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
   ActivityIndicator,
-} from "react-native";
-import { useSelector } from "react-redux";
-import API from "../../api";
-import ChatCard from "./ChatCard";
+} from 'react-native';
+import { useSelector } from 'react-redux';
+import API from '../../api';
+import ChatCard from './ChatCard';
 
 const MessagesOverviewScreen = ({ navigation }) => {
   const { token } = useSelector((state) => state.auth);
@@ -17,7 +17,7 @@ const MessagesOverviewScreen = ({ navigation }) => {
   const [chats, setChats] = useState([]);
 
   const fetchChats = async () => {
-    const response = await API.get("/chats", {
+    const response = await API.get('/chats', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -46,7 +46,7 @@ const MessagesOverviewScreen = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="gray" />
       </View>
     );

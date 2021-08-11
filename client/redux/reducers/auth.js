@@ -1,5 +1,5 @@
-import { LOGIN, SIGNUP, LOGOUT } from "../actions/types";
-import socket from "../../socket";
+import { LOGIN, SIGNUP, LOGOUT } from '../actions/types';
+import socket from '../../socket';
 
 const initialState = {
   token: null,

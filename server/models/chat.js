@@ -1,6 +1,6 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
-const account = require("./account");
+const account = require('./account');
 
 exports.read = ({ account_id1, account_id2 }) =>
   db.any(
@@ -20,7 +20,7 @@ exports.list = async (account_id) => {
       ORDER BY created_at DESC`,
     [account_id]
   );
-  
+
   const chats = {};
   const chatOrder = []; // list of partner ids, with most recent conversations first
   for (const message of messages) {
@@ -39,16 +39,16 @@ exports.list = async (account_id) => {
         concentration: partnerAccount.concentration,
         pronouns: partnerAccount.pronouns,
         bio: partnerAccount.bio,
-        messages: []
+        messages: [],
       };
     }
 
     chats[partner_id].messages.push(message);
   }
 
-  const orderedChats = []
+  const orderedChats = [];
   for (const id of chatOrder) {
-    orderedChats.push(chats[id])
+    orderedChats.push(chats[id]);
   }
   return orderedChats;
-}
+};

@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { FlatList, TextInput } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
-import socket from "../../socket";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
+import socket from '../../socket';
 
-import API from "../../api";
-import OtherUserMessage from "./OtherUserMessage";
-import UserMessage from "./UserMessage";
+import API from '../../api';
+import OtherUserMessage from './OtherUserMessage';
+import UserMessage from './UserMessage';
 
 const ChatScreen = ({ route, navigation }) => {
   const { token, accountId } = useSelector((state) => state.auth);
   const { recipientId, recipientName } = route.params;
   const [messages, setMessages] = useState([]);
-  const [messageToSend, setMessageToSend] = useState("");
+  const [messageToSend, setMessageToSend] = useState('');
 
   const renderChatMessage = ({ item }) => {
     if (item.sender_id === accountId) {
@@ -28,11 +28,11 @@ const ChatScreen = ({ route, navigation }) => {
     }
 
     const response = await API.post(
-      "message",
+      'message',
       { body: messageToSend, recipientId },
       { headers: { Authorization: `Bearer ${token}` } }
     );
-    setMessageToSend("");
+    setMessageToSend('');
     setMessages([response.data, ...messages]);
   };
 
@@ -52,7 +52,7 @@ const ChatScreen = ({ route, navigation }) => {
 
   // SET UP SOCKET
   useEffect(() => {
-    socket.on("message", (data) => {
+    socket.on('message', (data) => {
       setMessages([data, ...messages]);
     });
   }, [messages]);
