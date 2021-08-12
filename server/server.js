@@ -46,12 +46,12 @@ app.use('/', chatRoutes);
 app.use('/', messageRoutes);
 
 // route not found
-app.use('/', (req, res, next) => {
+app.use('/', (req, res) => {
   res.status(404).json({ message: 'route not found' });
 });
 
 // handling errors
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const status = err.statusCode || 500;
   const message = err.message;
   console.error(err);

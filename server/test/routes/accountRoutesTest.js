@@ -1,5 +1,10 @@
 const { expect } = require('chai');
+const { describe, beforeEach, after, it } = require('mocha');
 const { resetTables } = require('../../utils/dbHelpers.js');
+const app = require('../../server.js');
+const supertest = require('supertest');
+const request = supertest(app);
+const { registerAccount } = require('../helpers');
 
 describe('Account Routes', () => {
   beforeEach(resetTables);

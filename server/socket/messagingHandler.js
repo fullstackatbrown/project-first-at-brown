@@ -19,7 +19,7 @@ const registerMessagingHandler = (io, socket) => {
 };
 
 const emitMessage = (accountId, data) => {
-  if (connectedAccounts.hasOwnProperty(accountId)) {
+  if (accountId in connectedAccounts) {
     connectedAccounts[accountId].emit('message', data);
   }
 };

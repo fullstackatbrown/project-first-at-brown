@@ -5,7 +5,7 @@ const promptResponse = require('../models/promptResponse');
 
 const reportThreshold = 3;
 
-exports.getRooms = asyncHandler(async (_req, res) => {
+exports.getRooms = asyncHandler(async (req, res) => {
   const rooms = await room.readAll();
   res.json(rooms);
 });

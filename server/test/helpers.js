@@ -1,16 +1,13 @@
-const supertest = require('supertest');
 const app = require('../server.js');
-const chai = require('chai');
+const supertest = require('supertest');
+const request = supertest(app);
 
 if (process.env.POSTGRES_DATABASE !== 'test') {
   throw new Error('Please use POSTGRES_DATABASE=test when testing');
 }
 
-global.request = supertest(app);
-global.expect = chai.expect;
-
 // Helper for registering an account, returning the auth token
-global.registerAccount = async () => {
+module.exports.registerAccount = async () => {
   const res = await request.post('/account').send({
     firstName: 'Jane',
     lastName: 'Doe',

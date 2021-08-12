@@ -2,14 +2,14 @@ const asyncHandler = require('express-async-handler');
 
 const chat = require('../models/chat');
 
-exports.getChats = asyncHandler(async (req, res, next) => {
+exports.getChats = asyncHandler(async (req, res) => {
   const result = await chat.list(req.accountId);
 
   // maps recipient id to messages
   res.json({ chats: result });
 });
 
-exports.getChat = asyncHandler(async (req, res, next) => {
+exports.getChat = asyncHandler(async (req, res) => {
   const recipientId = req.query.recipientId;
 
   const result = await chat.read({
