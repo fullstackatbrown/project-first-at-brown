@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MainTabNavigator from '../navigation/MainTabNavigator';
 import AuthNavigator from '../navigation/AuthNavigator';
-import { autoLogin, logout } from '../redux/actions/auth';
+import { autoLogin } from '../redux/actions/auth';
 
 const EntryScreen = () => {
   const dispatch = useDispatch();

@@ -112,18 +112,18 @@ const RoomScreen = ({ route }) => {
     fetchRoom();
   };
 
-  const reportPromptResponse = async (authorId) => {
-    const response = await API.post(
-      '/prompt/' + roomId + '/report/' + authorId
-    );
-    if (response.data.reportSuccess) {
-      console.log('TODO: report success message');
-    } else {
-      console.log(
-        'TODO: report failure message (i.e. user already reported this)'
-      );
-    }
-  };
+  // const reportPromptResponse = async (authorId) => {
+  //   const response = await API.post(
+  //     '/prompt/' + roomId + '/report/' + authorId
+  //   );
+  //   if (response.data.reportSuccess) {
+  //     console.log('TODO: report success message');
+  //   } else {
+  //     console.log(
+  //       'TODO: report failure message (i.e. user already reported this)'
+  //     );
+  //   }
+  // };
 
   const renderUserResponse = () => {
     if (userResponse === null) {

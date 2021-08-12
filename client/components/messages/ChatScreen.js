@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
@@ -8,9 +8,9 @@ import API from '../../api';
 import OtherUserMessage from './OtherUserMessage';
 import UserMessage from './UserMessage';
 
-const ChatScreen = ({ route, navigation }) => {
+const ChatScreen = ({ route }) => {
   const { token, accountId } = useSelector((state) => state.auth);
-  const { recipientId, recipientName } = route.params;
+  const { recipientId } = route.params;
   const [messages, setMessages] = useState([]);
   const [messageToSend, setMessageToSend] = useState('');
 
