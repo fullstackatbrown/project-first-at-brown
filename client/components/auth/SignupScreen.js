@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Avatar, Button, Divider, Input } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -138,15 +138,6 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignSelf: 'center',
-  },
-  name: {
-    justifyContent: 'space-around',
-  },
-  label: {
-    color: 'dimgrey',
-  },
-  content: {
-    fontSize: 20,
   },
   section: {
     marginTop: 10,

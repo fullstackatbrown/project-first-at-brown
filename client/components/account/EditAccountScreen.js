@@ -135,15 +135,6 @@ const styles = StyleSheet.create({
   avatar: {
     alignSelf: 'center',
   },
-  name: {
-    justifyContent: 'space-around',
-  },
-  label: {
-    color: 'dimgrey',
-  },
-  content: {
-    fontSize: 20,
-  },
   section: {
     marginTop: 10,
   },

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -29,5 +28,3 @@ const EntryScreen = () => {
 };
 
 export default EntryScreen;
-
-const styles = StyleSheet.create({});

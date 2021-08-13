@@ -208,7 +208,7 @@ const RoomScreen = ({ route }) => {
 
   const renderResponses = () => {
     return responses.map((r) => (
-      <PromptResponse key={r.author_id} response={r} />
+      <PromptResponse key={r.account_id} response={r} />
     ));
   };
 
