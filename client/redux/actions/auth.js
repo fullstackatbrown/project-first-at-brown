@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LOGIN, LOGOUT, SIGNUP } from './types';
+import { LOGIN, LOGOUT } from './types';
 
 export const login = (token, accountId) => {
   return async (dispatch) => {

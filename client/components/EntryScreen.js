@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import MainTabNavigator from '../navigation/MainTabNavigator';
 import AuthNavigator from '../navigation/AuthNavigator';
-import { autoLogin, logout } from '../redux/actions/auth';
+import { autoLogin } from '../redux/actions/auth';
 
 const EntryScreen = () => {
   const dispatch = useDispatch();
@@ -29,5 +28,3 @@ const EntryScreen = () => {
 };
 
 export default EntryScreen;
-
-const styles = StyleSheet.create({});

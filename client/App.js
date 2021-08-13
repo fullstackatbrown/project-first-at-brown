@@ -1,6 +1,7 @@
 import React from 'react';
+import { Platform } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import store from './redux/store';

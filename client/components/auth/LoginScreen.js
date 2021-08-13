@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Button, StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Google from 'expo-google-app-auth';
 import { useDispatch } from 'react-redux';
