@@ -7,6 +7,7 @@ import socket from "../../socket";
 import API from "../../api";
 import OtherUserMessage from "./OtherUserMessage";
 import UserMessage from "./UserMessage";
+import DateLabel from "./DateLabel";
 
 const ChatScreen = ({ route, navigation }) => {
   const { token, accountId } = useSelector((state) => state.auth);
@@ -14,11 +15,32 @@ const ChatScreen = ({ route, navigation }) => {
   const [messages, setMessages] = useState([]);
   const [messageToSend, setMessageToSend] = useState("");
 
-  const renderChatMessage = ({ item }) => {
+  const renderChatMessage = ({ item, index }) => {
+    const currentDate = new Date(item.created_at);
+    const currentTimeString = currentDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    const currentDateString = currentDate.toLocaleDateString();
+    const prevDateString =
+      messages[index + 1] &&
+      new Date(messages[index + 1].created_at).toLocaleDateString();
+    const isFirstOfDay = currentDateString !== prevDateString;
+
     if (item.sender_id === accountId) {
-      return <UserMessage body={item.body} />;
+      return (
+        <>
+          {isFirstOfDay && <DateLabel date={currentDateString} />}
+          <UserMessage body={item.body} time={currentTimeString} />
+        </>
+      );
     } else {
-      return <OtherUserMessage body={item.body} />;
+      return (
+        <>
+          {isFirstOfDay && <DateLabel date={currentDateString} />}
+          <OtherUserMessage body={item.body} time={currentTimeString} />
+        </>
+      );
     }
   };
 
