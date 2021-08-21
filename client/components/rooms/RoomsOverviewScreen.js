@@ -25,7 +25,14 @@ const RoomsOverviewScreen = ({ navigation }) => {
   };
 
   const renderRoom = ({ item }) => {
-    return <RoomCard roomData={item} navigation={navigation} />;
+    return (
+      <RoomCard
+        prompt={item.prompt}
+        numResponses={Number(item.num_responses)}
+        expiresAt={item.expires_at}
+        onClick={() => navigation.navigate('Room', { roomId: item.room_id })}
+      />
+    );
   };
 
   useEffect(() => {
@@ -53,7 +60,7 @@ const RoomsOverviewScreen = ({ navigation }) => {
         renderItem={renderRoom}
         onRefresh={refreshRooms}
         refreshing={isRefreshing}
-        keyExtractor={(_item, index) => index.toString()}
+        keyExtractor={(item) => String(item.room_id)}
       />
     </View>
   );

@@ -1,90 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState, useMemo } from 'react';
+import {
+  Button,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { useSelector } from 'react-redux';
-import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import PromptResponse from './PromptResponse';
+import RoomCard from './RoomCard';
 import API from '../../api';
-
-const PromptResponse = ({ response, children }) => {
-  const renderTimeSince = (rawDateString) => {
-    const simplePluralize = (num, noun) => {
-      if (num === 1) {
-        return num + ' ' + noun;
-      } else {
-        return num + ' ' + noun + 's';
-      }
-    };
-
-    let seconds = Math.floor((new Date() - new Date(rawDateString)) / 1000);
-    seconds = seconds > 0 ? seconds : 0;
-    let interval = seconds / 31536000;
-    if (interval > 1) {
-      return simplePluralize(Math.floor(interval), 'year');
-    }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return simplePluralize(Math.floor(interval), 'month');
-    }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return simplePluralize(Math.floor(interval), 'day');
-    }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return simplePluralize(Math.floor(interval), 'hour');
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return simplePluralize(Math.floor(interval), 'minute');
-    }
-    return simplePluralize(Math.floor(seconds), 'second');
-  };
-
-  return (
-    <View style={styles.response}>
-      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-        <Avatar
-          rounded
-          size="small"
-          source={{
-            uri:
-              response.picture ||
-              'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
-          }}
-          placeholderStyle={{ backgroundColor: 'transparent' }}
-          containerStyle={{ marginRight: 15 }}
-        />
-        <View>
-          <Text>
-            {response.first_name} {response.last_name}
-          </Text>
-          <Text>{renderTimeSince(response.created_at)} ago</Text>
-        </View>
-      </View>
-      <Text>{response.body}</Text>
-      {children}
-    </View>
-  );
-};
 
 const RoomScreen = ({ route }) => {
   const [prompt, setPrompt] = useState(null);
+  const [expiresAt, setExpiresAt] = useState(null);
   const [responses, setResponses] = useState([]);
   const [userResponse, setUserResponse] = useState(null);
   const [textInputValue, setTextInputValue] = useState('');
   const [isEditingResponse, setIsEditingResponse] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // List of items to render on this room's screen
+  const items = useMemo(() => {
+    const newItems = [];
+    if (prompt !== null) {
+      newItems.push({ type: 'prompt' });
+      newItems.push({ type: 'userResponse' });
+    }
+    responses.forEach((res) => {
+      newItems.push({ type: 'response', data: res });
+    });
+    return newItems;
+  }, [prompt, responses]);
 
   const { roomId } = route.params;
   const { token } = useSelector((state) => state.auth);
   const headers = { Authorization: `Bearer ${token}` };
 
   const fetchRoom = async () => {
+    setIsRefreshing(true);
     const response = await API.get('/room/' + roomId, { headers });
-    const { prompt, responses, user_response } = response.data;
+    const { expires_at, prompt, responses, user_response } = response.data;
+    setExpiresAt(expires_at);
     setPrompt(prompt);
     setResponses(responses);
     setUserResponse(user_response);
+    setIsRefreshing(false);
   };
 
   const createPromptResponse = async () => {
@@ -129,12 +92,13 @@ const RoomScreen = ({ route }) => {
     if (userResponse === null) {
       return (
         <View style={styles.responseInput}>
-          <Text>Respond to prompt</Text>
+          <Text style={styles.responseInputTitle}>Respond to prompt</Text>
           <TextInput
             multiline
-            numberOfLines={5}
+            numberOfLines={3}
             value={textInputValue}
             onChangeText={setTextInputValue}
+            style={styles.textInput}
           />
           <Button
             disabled={textInputValue.trim().length === 0}
@@ -146,12 +110,12 @@ const RoomScreen = ({ route }) => {
     } else if (isEditingResponse) {
       return (
         <View style={styles.responseInput}>
-          <Text>Update your response</Text>
           <TextInput
             multiline
             numberOfLines={5}
             value={textInputValue}
             onChangeText={setTextInputValue}
+            style={styles.textInput}
           />
           <View style={styles.buttonRow}>
             <View style={styles.marginLeft}>
@@ -176,40 +140,63 @@ const RoomScreen = ({ route }) => {
       );
     } else {
       return (
-        <View style={styles.userResponse}>
-          <Text>Your response</Text>
-          <PromptResponse response={userResponse}>
-            <View style={styles.buttonRow}>
-              {userResponse.report_threshold_exceeded && (
-                <Icon name="exclamation-circle" size={24} color="red" />
-              )}
-              <View style={styles.marginLeft}>
-                <Button
-                  title="Edit"
-                  onPress={() => {
-                    setIsEditingResponse(true);
-                    setTextInputValue(userResponse.body);
-                  }}
-                />
-              </View>
-              <View style={styles.marginLeft}>
-                <Button
-                  title="Delete"
-                  color="red"
-                  onPress={deletePromptResponse}
-                />
-              </View>
+        <PromptResponse response={userResponse}>
+          <View style={styles.buttonRow}>
+            {userResponse.report_threshold_exceeded && (
+              <Icon name="exclamation-circle" size={24} color="red" />
+            )}
+            <View style={styles.marginLeft}>
+              <Button
+                title="Edit"
+                onPress={() => {
+                  setIsEditingResponse(true);
+                  setTextInputValue(userResponse.body);
+                }}
+              />
             </View>
-          </PromptResponse>
-        </View>
+            <View style={styles.marginLeft}>
+              <Button
+                title="Delete"
+                color="red"
+                onPress={deletePromptResponse}
+              />
+            </View>
+          </View>
+        </PromptResponse>
       );
     }
   };
 
-  const renderResponses = () => {
-    return responses.map((r) => (
-      <PromptResponse key={r.account_id} response={r} />
-    ));
+  const renderItemFlatList = ({ item }) => {
+    if (item.type === 'prompt') {
+      return (
+        <RoomCard
+          prompt={prompt}
+          numResponses={responses.length + (userResponse === null ? 0 : 1)}
+          expiresAt={expiresAt}
+          onClick={null}
+        />
+      );
+    } else if (item.type === 'userResponse') {
+      return renderUserResponse();
+    } else if (item.type === 'response') {
+      const res = item.data;
+      return <PromptResponse key={res.account_id} response={res} />;
+    } else {
+      return null;
+    }
+  };
+
+  const keyExtractorFlatList = (item) => {
+    if (item.type === 'prompt') {
+      return 'prompt';
+    } else if (item.type === 'userResponse') {
+      return 'userResponse';
+    } else if (item.type === 'response') {
+      return 'response' + item.data.account_id;
+    } else {
+      return '';
+    }
   };
 
   useEffect(() => {
@@ -217,14 +204,14 @@ const RoomScreen = ({ route }) => {
   }, []);
 
   return (
-    <View>
-      {prompt !== null && (
-        <View style={styles.screen}>
-          <Text>{prompt}</Text>
-          {renderUserResponse()}
-          {renderResponses()}
-        </View>
-      )}
+    <View style={styles.screen}>
+      <FlatList
+        data={items}
+        renderItem={renderItemFlatList}
+        onRefresh={fetchRoom}
+        refreshing={isRefreshing}
+        keyExtractor={keyExtractorFlatList}
+      />
     </View>
   );
 };
@@ -233,14 +220,23 @@ export default RoomScreen;
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 16,
-    flexDirection: 'column',
+    padding: 10,
   },
-  responseInput: {},
-  response: {
-    flexDirection: 'column',
+  responseInput: {
     backgroundColor: 'white',
     padding: 16,
+    borderRadius: 10,
+    marginHorizontal: 10,
+    marginVertical: 2,
+  },
+  responseInputTitle: {
+    alignSelf: 'center',
+    fontSize: 20,
+  },
+  textInput: {
+    fontSize: 16,
+    textAlignVertical: 'top',
+    marginBottom: 8,
   },
   buttonRow: {
     justifyContent: 'flex-end',
