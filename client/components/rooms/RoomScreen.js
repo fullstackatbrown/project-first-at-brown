@@ -9,11 +9,11 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import PromptResponse from './PromptResponse';
+import PromptResponseCard from './PromptResponseCard';
 import RoomCard from './RoomCard';
 import API from '../../api';
 
-const RoomScreen = ({ route }) => {
+const RoomScreen = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState(null);
   const [expiresAt, setExpiresAt] = useState(null);
   const [responses, setResponses] = useState([]);
@@ -140,7 +140,7 @@ const RoomScreen = ({ route }) => {
       );
     } else {
       return (
-        <PromptResponse response={userResponse}>
+        <PromptResponseCard response={userResponse} onClick={null}>
           <View style={styles.buttonRow}>
             {userResponse.report_threshold_exceeded && (
               <Icon name="exclamation-circle" size={24} color="red" />
@@ -162,7 +162,7 @@ const RoomScreen = ({ route }) => {
               />
             </View>
           </View>
-        </PromptResponse>
+        </PromptResponseCard>
       );
     }
   };
@@ -181,7 +181,22 @@ const RoomScreen = ({ route }) => {
       return renderUserResponse();
     } else if (item.type === 'response') {
       const res = item.data;
-      return <PromptResponse key={res.account_id} response={res} />;
+      return (
+        <PromptResponseCard
+          key={res.account_id}
+          response={res}
+          onClick={() =>
+            navigation.navigate('Messages', {
+              screen: 'Chat',
+              params: {
+                recipientId: res.account_id,
+                recipientName: res.first_name + ' ' + res.last_name,
+                recipientPicture: res.picture,
+              },
+            })
+          }
+        />
+      );
     } else {
       return null;
     }

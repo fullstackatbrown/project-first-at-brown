@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 const renderTimeSince = (rawDateString) => {
@@ -36,8 +36,8 @@ const renderTimeSince = (rawDateString) => {
   return simplePluralize(Math.floor(seconds), 'second');
 };
 
-const PromptResponse = ({ response, children }) => {
-  return (
+const PromptResponseCard = ({ response, onClick, children }) => {
+  const card = (
     <View style={styles.response}>
       <View style={{ flexDirection: 'row', marginBottom: 8 }}>
         <Avatar
@@ -62,9 +62,15 @@ const PromptResponse = ({ response, children }) => {
       {children}
     </View>
   );
+
+  if (onClick === null) {
+    return card;
+  } else {
+    return <Pressable onPress={onClick}>{card}</Pressable>;
+  }
 };
 
-export default PromptResponse;
+export default PromptResponseCard;
 
 const styles = StyleSheet.create({
   response: {

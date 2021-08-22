@@ -8,7 +8,7 @@ const ChatCard = ({ chatData, navigation }) => {
       onPress={() => {
         navigation.navigate('Chat', {
           recipientId: chatData.accountId,
-          recipientName: chatData.firstName,
+          recipientName: chatData.firstName + ' ' + chatData.lastName,
           recipientPicture: chatData.picture,
         });
       }}
