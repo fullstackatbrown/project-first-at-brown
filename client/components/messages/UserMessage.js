@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const UserMessage = ({ body }) => {
+const UserMessage = ({ body, time }) => {
   return (
     <View style={styles.messageBox}>
       <Text>{body}</Text>
+      <Text style={styles.timeText}>{time}</Text>
     </View>
   );
 };
@@ -20,5 +21,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     marginTop: 10,
     borderRadius: 10,
+  },
+  timeText: {
+    alignSelf: 'flex-end',
+    color: 'gray',
+    fontSize: 10,
   },
 });
