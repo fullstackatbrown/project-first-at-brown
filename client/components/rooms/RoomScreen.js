@@ -188,6 +188,7 @@ const RoomScreen = ({ navigation, route }) => {
           onClick={() =>
             navigation.navigate('Messages', {
               screen: 'Chat',
+              initial: false,
               params: {
                 recipientId: res.account_id,
                 recipientName: res.first_name + ' ' + res.last_name,
