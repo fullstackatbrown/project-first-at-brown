@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, View, ScrollView } from "react-native";
-import { Avatar, Text, Button, Divider } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
-import { useIsFocused } from "@react-navigation/native";
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View, ScrollView } from 'react-native';
+import { Avatar, Text, Button, Divider } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 
-import API from "../../api";
-import { logout } from "../../redux/actions/auth";
+import API from '../../api';
+import { logout } from '../../redux/actions/auth';
 
 const AccountScreen = ({ navigation }) => {
   const { accountId, token } = useSelector((state) => state.auth);
@@ -30,7 +30,7 @@ const AccountScreen = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
         <ActivityIndicator size="large" color="gray" />
       </View>
     );
@@ -45,9 +45,9 @@ const AccountScreen = ({ navigation }) => {
           source={{
             uri:
               accountDetails.picture ||
-              "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+              'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
           }}
-          placeholderStyle={{ backgroundColor: "transparent" }}
+          placeholderStyle={{ backgroundColor: 'transparent' }}
         />
         <View style={styles.name}>
           <Text h3>{accountDetails.first_name}</Text>
@@ -74,14 +74,14 @@ const AccountScreen = ({ navigation }) => {
       <View style={styles.section}>
         <Button
           icon={{
-            name: "edit",
+            name: 'edit',
             size: 15,
-            color: "white",
+            color: 'white',
           }}
           title="Edit Profile"
           style={styles.section}
           onPress={() => {
-            navigation.navigate("Edit", { accountDetails });
+            navigation.navigate('Edit', { accountDetails });
           }}
         />
       </View>
@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   pictureNameDisplay: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   name: {
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
   },
   label: {
-    color: "dimgrey",
+    color: 'dimgrey',
   },
   content: {
     fontSize: 20,

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Avatar, Button, Divider, Input } from "react-native-elements";
-import { useSelector } from "react-redux";
-import API from "../../api";
+import React, { useState } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Avatar, Button, Divider, Input } from 'react-native-elements';
+import { useSelector } from 'react-redux';
+import API from '../../api';
 
 const EditAccountScreen = ({ route, navigation }) => {
   const { token } = useSelector((state) => state.auth);
@@ -20,11 +20,11 @@ const EditAccountScreen = ({ route, navigation }) => {
   const onSubmitHandler = async () => {
     setIsSending(true);
     await API.put(
-      "account",
+      'account',
       {
         firstName,
         lastName,
-        picture: accountDetails.picture || "",
+        picture: accountDetails.picture || '',
         year,
         concentration,
         pronouns,
@@ -35,7 +35,7 @@ const EditAccountScreen = ({ route, navigation }) => {
       }
     );
     setIsSending(false);
-    navigation.navigate("Account");
+    navigation.navigate('Account');
   };
 
   return (
@@ -47,9 +47,9 @@ const EditAccountScreen = ({ route, navigation }) => {
           source={{
             uri:
               accountDetails.picture ||
-              "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+              'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
           }}
-          placeholderStyle={{ backgroundColor: "transparent" }}
+          placeholderStyle={{ backgroundColor: 'transparent' }}
         />
       </View>
       <View style={styles.section}>
@@ -111,9 +111,9 @@ const EditAccountScreen = ({ route, navigation }) => {
       <View style={styles.section}>
         <Button
           icon={{
-            name: "save",
+            name: 'save',
             size: 15,
-            color: "white",
+            color: 'white',
           }}
           title="Save Edits"
           style={styles.section}
@@ -133,16 +133,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   avatar: {
-    alignSelf: "center",
-  },
-  name: {
-    justifyContent: "space-around",
-  },
-  label: {
-    color: "dimgrey",
-  },
-  content: {
-    fontSize: 20,
+    alignSelf: 'center',
   },
   section: {
     marginTop: 10,

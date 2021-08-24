@@ -1,11 +1,11 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const room = require("../models/room");
-const promptResponse = require("../models/promptResponse");
+const room = require('../models/room');
+const promptResponse = require('../models/promptResponse');
 
 const reportThreshold = 3;
 
-exports.getRooms = asyncHandler(async (_req, res) => {
+exports.getRooms = asyncHandler(async (req, res) => {
   const rooms = await room.readAll();
   res.json(rooms);
 });
@@ -15,7 +15,7 @@ exports.getRoom = asyncHandler(async (req, res) => {
   const roomData = await room.read(roomId);
 
   if (roomData === null) {
-    res.status(404).json({ message: "room not found" });
+    res.status(404).json({ message: 'room not found' });
     return;
   }
 
@@ -29,7 +29,7 @@ exports.getRoom = asyncHandler(async (req, res) => {
     delete response.num_reports;
     if (response.account_id === accountId) {
       userResponse = response;
-      response.report_threshold_exceeded = (numReports >= reportThreshold);
+      response.report_threshold_exceeded = numReports >= reportThreshold;
     } else if (numReports < reportThreshold) {
       otherResponses.push(response);
     }
@@ -38,7 +38,7 @@ exports.getRoom = asyncHandler(async (req, res) => {
   res.json({
     ...roomData,
     user_response: userResponse,
-    responses: otherResponses
+    responses: otherResponses,
   });
 });
 

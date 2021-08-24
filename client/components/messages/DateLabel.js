@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 const DateLabel = ({ date }) => {
   return (
@@ -13,10 +13,10 @@ export default DateLabel;
 
 const styles = StyleSheet.create({
   messageBox: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: 10,
   },
   dateText: {
-    color: "gray",
+    color: 'gray',
   },
 });

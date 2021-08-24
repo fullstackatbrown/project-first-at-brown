@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { Avatar, Button, Divider, Input } from "react-native-elements";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { Avatar, Button, Divider, Input } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 
-import API from "../../api";
-import { login } from "../../redux/actions/auth";
+import API from '../../api';
+import { login } from '../../redux/actions/auth';
 
 const SignupScreen = ({ route }) => {
   const { userData } = route.params;
@@ -13,16 +13,16 @@ const SignupScreen = ({ route }) => {
   const [firstName, setFirstName] = useState(userData.givenName);
   const [lastName, setLastName] = useState(userData.familyName);
   const [year, setYear] = useState(2023);
-  const [concentration, setConcentration] = useState("");
-  const [pronouns, setPronouns] = useState("");
-  const [introduction, setIntroduction] = useState("");
+  const [concentration, setConcentration] = useState('');
+  const [pronouns, setPronouns] = useState('');
+  const [introduction, setIntroduction] = useState('');
 
   const dispatch = useDispatch();
 
   const onSubmitHandler = async () => {
     setIsSending(true);
     try {
-      const response = await API.post("account", {
+      const response = await API.post('account', {
         firstName,
         lastName,
         picture: userData.photoUrl,
@@ -50,9 +50,9 @@ const SignupScreen = ({ route }) => {
             source={{
               uri:
                 userData.photoUrl ||
-                "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+                'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
             }}
-            placeholderStyle={{ backgroundColor: "transparent" }}
+            placeholderStyle={{ backgroundColor: 'transparent' }}
           />
         </View>
         <View style={styles.section}>
@@ -114,9 +114,9 @@ const SignupScreen = ({ route }) => {
         <View style={styles.section}>
           <Button
             icon={{
-              name: "save",
+              name: 'save',
               size: 15,
-              color: "white",
+              color: 'white',
             }}
             title="Register"
             style={styles.section}
@@ -137,16 +137,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   avatar: {
-    alignSelf: "center",
-  },
-  name: {
-    justifyContent: "space-around",
-  },
-  label: {
-    color: "dimgrey",
-  },
-  content: {
-    fontSize: 20,
+    alignSelf: 'center',
   },
   section: {
     marginTop: 10,

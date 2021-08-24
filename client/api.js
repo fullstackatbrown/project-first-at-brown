@@ -1,6 +1,6 @@
-import Constants from "expo-constants";
-import axios from "axios";
-import config from "./config";
+import Constants from 'expo-constants';
+import axios from 'axios';
+import config from './config';
 
 const { manifest } = Constants;
 const uri = `http://${manifest.debuggerHost
@@ -13,6 +13,6 @@ const uri = `http://${manifest.debuggerHost
 export default axios.create({
   baseURL: config.SERVER_URL || uri,
   headers: {
-    "Content-type": "application/json",
+    'Content-type': 'application/json',
   },
 });

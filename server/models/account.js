@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 exports.login = (token) =>
   db.oneOrNone(
@@ -20,14 +20,16 @@ exports.create = async ({
   email,
 }) => {
   const existingAccountWithToken = await db.oneOrNone(
-    `SELECT * FROM account WHERE token = $1`, [token]
+    `SELECT * FROM account WHERE token = $1`,
+    [token]
   );
   if (existingAccountWithToken != null) {
-    return { error: "Account with authentication token already exists" };
+    return { error: 'Account with authentication token already exists' };
   }
 
   const existingAccountWithEmail = await db.oneOrNone(
-    `SELECT * FROM account WHERE email = $1`, [email]
+    `SELECT * FROM account WHERE email = $1`,
+    [email]
   );
   if (existingAccountWithEmail != null) {
     return { error: "Account with the email '" + email + "' already exists" };
@@ -49,7 +51,7 @@ exports.create = async ({
       email,
     ]
   );
-}
+};
 
 exports.read = (account_id) =>
   db.oneOrNone(
@@ -73,7 +75,16 @@ exports.update = (
           pronouns      = COALESCE($6, pronouns),
           bio           = COALESCE($7, bio)
       WHERE account_id  = $8`,
-    [first_name, last_name, year, picture, concentration, pronouns, bio, account_id]
+    [
+      first_name,
+      last_name,
+      year,
+      picture,
+      concentration,
+      pronouns,
+      bio,
+      account_id,
+    ]
   );
 
 exports.delete = (account_id) =>

@@ -1,7 +1,8 @@
 const db = require('../config/db');
 
-exports.read = (room_id) => db.any(
-  `SELECT room.prompt, prompt_response.*,
+exports.read = (room_id) =>
+  db.any(
+    `SELECT room.prompt, prompt_response.*,
       first_name, last_name, year, picture, concentration, pronouns, bio,
       COUNT(prompt_response_report.reporter_account_id) AS num_reports
       FROM room
@@ -17,8 +18,8 @@ exports.read = (room_id) => db.any(
       prompt_response.room_id, prompt_response.account_id, prompt_response.body, prompt_response.created_at,
       first_name, last_name, year, picture, concentration, pronouns, bio
       ORDER BY prompt_response.created_at DESC`,
-  [room_id]
-);
+    [room_id]
+  );
 
 // Returns true if created successfully, false otherwise
 exports.create = async ({ room_id, account_id, body }) => {
@@ -39,25 +40,31 @@ exports.create = async ({ room_id, account_id, body }) => {
   } else {
     return false;
   }
-}
+};
 
-exports.update = ({ room_id, account_id, body }) => db.oneOrNone(
-  `UPDATE prompt_response
+exports.update = ({ room_id, account_id, body }) =>
+  db.oneOrNone(
+    `UPDATE prompt_response
       SET body = COALESCE($1, body), created_at = DEFAULT
       WHERE room_id = $2 AND account_id = $3
       RETURNING *`,
-  [body, room_id, account_id]
-);
+    [body, room_id, account_id]
+  );
 
-exports.delete = ({ room_id, account_id }) => db.none(
-  `DELETE
+exports.delete = ({ room_id, account_id }) =>
+  db.none(
+    `DELETE
       FROM prompt_response
       WHERE room_id = $1 AND account_id = $2`,
-  [room_id, account_id]
-);
+    [room_id, account_id]
+  );
 
 // Returns true if created successfully, false otherwise
-exports.createReport = async ({prompt_response_room_id, prompt_response_account_id, reporter_account_id}) => {
+exports.createReport = async ({
+  prompt_response_room_id,
+  prompt_response_account_id,
+  reporter_account_id,
+}) => {
   const report = await db.oneOrNone(
     `SELECT * FROM prompt_response_report
         WHERE prompt_response_room_id = $1
@@ -71,9 +78,9 @@ exports.createReport = async ({prompt_response_room_id, prompt_response_account_
       `INSERT INTO prompt_response_report
           VALUES ($1, $2, $3)`,
       [prompt_response_room_id, prompt_response_account_id, reporter_account_id]
-    )
+    );
     return true;
   } else {
     return false;
   }
-}
+};

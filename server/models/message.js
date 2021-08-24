@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 exports.create = ({ body, sender_id, recipient_id }) =>
   db.one(

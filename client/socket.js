@@ -1,5 +1,5 @@
-import Constants from "expo-constants";
-import { io } from "socket.io-client";
+import Constants from 'expo-constants';
+import { io } from 'socket.io-client';
 
 const { manifest } = Constants;
 const URL = `http://${manifest.debuggerHost

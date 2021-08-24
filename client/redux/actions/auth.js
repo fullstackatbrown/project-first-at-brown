@@ -1,11 +1,11 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LOGIN, LOGOUT, SIGNUP } from "./types";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LOGIN, LOGOUT } from './types';
 
 export const login = (token, accountId) => {
   return async (dispatch) => {
     // store user data in async storage
     await AsyncStorage.setItem(
-      "@account",
+      '@account',
       JSON.stringify({
         token,
         accountId,
@@ -30,7 +30,7 @@ export const autoLogin = (token, accountId) => {
 
 export const logout = () => {
   return async (dispatch) => {
-    await AsyncStorage.removeItem("@account");
+    await AsyncStorage.removeItem('@account');
     dispatch({ type: LOGOUT });
   };
 };

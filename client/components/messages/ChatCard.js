@@ -1,14 +1,14 @@
-import React from "react";
-import { StyleSheet, View, Pressable } from "react-native";
-import { Avatar, Text } from "react-native-elements";
+import React from 'react';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { Avatar, Text } from 'react-native-elements';
 
 const ChatCard = ({ chatData, navigation }) => {
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("Chat", {
+        navigation.navigate('Chat', {
           recipientId: chatData.accountId,
-          recipientName: chatData.firstName,
+          recipientName: chatData.firstName + ' ' + chatData.lastName,
           recipientPicture: chatData.picture,
         });
       }}
@@ -20,9 +20,9 @@ const ChatCard = ({ chatData, navigation }) => {
           source={{
             uri:
               chatData.picture ||
-              "https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg",
+              'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
           }}
-          placeholderStyle={{ backgroundColor: "transparent" }}
+          placeholderStyle={{ backgroundColor: 'transparent' }}
         />
         <View style={styles.description}>
           <Text h4>{chatData.firstName}</Text>
@@ -39,15 +39,15 @@ export default ChatCard;
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: "row",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
   },
   description: {
     marginLeft: 10,
     padding: 5,
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
   },
   message: {},
 });

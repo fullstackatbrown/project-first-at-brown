@@ -1,7 +1,7 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const message = require("../models/message");
-const { emitMessage } = require("../socket/messagingHandler");
+const message = require('../models/message');
+const { emitMessage } = require('../socket/messagingHandler');
 
 exports.post = asyncHandler(async (req, res) => {
   const body = req.body.body;
