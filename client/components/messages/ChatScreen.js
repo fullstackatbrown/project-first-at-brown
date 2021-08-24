@@ -30,15 +30,15 @@ const ChatScreen = ({ route, navigation }) => {
     if (item.sender_id === accountId) {
       return (
         <>
-          {isFirstOfDay && <DateLabel date={currentDateString} />}
           <UserMessage body={item.body} time={currentTimeString} />
+          {isFirstOfDay && <DateLabel date={currentDateString} />}
         </>
       );
     } else {
       return (
         <>
-          {isFirstOfDay && <DateLabel date={currentDateString} />}
           <OtherUserMessage body={item.body} time={currentTimeString} />
+          {isFirstOfDay && <DateLabel date={currentDateString} />}
         </>
       );
     }
