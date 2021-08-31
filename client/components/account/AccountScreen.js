@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View, ScrollView } from 'react-native';
 import { Avatar, Text, Button, Divider } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, CommonActions } from '@react-navigation/native';
 
 import API from '../../api';
 import { logout } from '../../redux/actions/auth';
@@ -91,7 +91,15 @@ const AccountScreen = ({ navigation }) => {
           title="Logout"
           style={styles.section}
           onPress={() => {
-            dispatch(logout());
+            const reset = () => {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 1,
+                  routes: [{ name: 'Messages' }, { name: 'Account' }],
+                })
+              );
+            };
+            dispatch(logout(reset));
           }}
         />
       </View>

@@ -63,7 +63,7 @@ const EditAccountScreen = ({ route, navigation }) => {
       </View>
       <View style={styles.section}>
         <Input
-          label="LastName"
+          label="Last Name"
           value={lastName}
           onChangeText={(value) => {
             setLastName(value);
