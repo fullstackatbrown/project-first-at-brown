@@ -28,8 +28,9 @@ export const autoLogin = (token, accountId) => {
   };
 };
 
-export const logout = () => {
+export const logout = (reset) => {
   return async (dispatch) => {
+    reset();
     await AsyncStorage.removeItem('@account');
     dispatch({ type: LOGOUT });
   };

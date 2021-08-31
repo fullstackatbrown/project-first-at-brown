@@ -66,7 +66,7 @@ const SignupScreen = ({ route }) => {
         </View>
         <View style={styles.section}>
           <Input
-            label="LastName"
+            label="Last Name"
             value={lastName}
             onChangeText={(value) => {
               setLastName(value);
