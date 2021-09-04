@@ -27,7 +27,7 @@ const ChatCard = ({ chatData, navigation }) => {
         <View style={styles.description}>
           <Text h4>{chatData.firstName}</Text>
           <Text style={styles.message} numberOfLines={1}>
-            {chatData.messages[0].body}
+            {chatData.latestMessage.body}
           </Text>
         </View>
       </View>
