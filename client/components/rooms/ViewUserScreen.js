@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View, ScrollView } from 'react-native';
 import { Avatar, Text, Divider, Button } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 
 import API from '../../api';
