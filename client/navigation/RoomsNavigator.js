@@ -3,6 +3,7 @@ import React from 'react';
 
 import RoomScreen from '../components/rooms/RoomScreen';
 import RoomsOverviewScreen from '../components/rooms/RoomsOverviewScreen';
+import ViewUserScreen from '../components/rooms/ViewUserScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const RoomsNavigator = () => {
         component={RoomScreen}
         options={{ title: '' }}
       />
+      <Stack.Screen name="User" component={ViewUserScreen} />
     </Stack.Navigator>
   );
 };

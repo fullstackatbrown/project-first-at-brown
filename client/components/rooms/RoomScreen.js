@@ -185,17 +185,9 @@ const RoomScreen = ({ navigation, route }) => {
         <PromptResponseCard
           key={res.account_id}
           response={res}
-          onClick={() =>
-            navigation.navigate('Messages', {
-              screen: 'Chat',
-              initial: false,
-              params: {
-                recipientId: res.account_id,
-                recipientName: res.first_name + ' ' + res.last_name,
-                recipientPicture: res.picture,
-              },
-            })
-          }
+          onClick={() => {
+            navigation.navigate('User', { accountId: res.account_id });
+          }}
         />
       );
     } else {
