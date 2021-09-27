@@ -43,7 +43,7 @@ exports.list = async (account_id) => {
       };
     }
 
-    // chats[partner_id].messages.push(); // removed messages, only show lastMessage
+    // chats[partner_id].messages.push(); // removed messages, only show latestMessage
   }
 
   const orderedChats = [];

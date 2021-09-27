@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   View,
+  Modal,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,6 +22,7 @@ const RoomScreen = ({ navigation, route }) => {
   const [textInputValue, setTextInputValue] = useState('');
   const [isEditingResponse, setIsEditingResponse] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [reportModal, setReportModal] = useState(null);
 
   // List of items to render on this room's screen
   const items = useMemo(() => {
@@ -75,18 +77,12 @@ const RoomScreen = ({ navigation, route }) => {
     fetchRoom();
   };
 
-  // const reportPromptResponse = async (authorId) => {
-  //   const response = await API.post(
-  //     '/prompt/' + roomId + '/report/' + authorId
-  //   );
-  //   if (response.data.reportSuccess) {
-  //     console.log('TODO: report success message');
-  //   } else {
-  //     console.log(
-  //       'TODO: report failure message (i.e. user already reported this)'
-  //     );
-  //   }
-  // };
+  const reportPromptResponse = async (authorId) => {
+    await API.post('/prompt/' + roomId + '/report/' + authorId, null, {
+      headers,
+    });
+    // if (response.data.reportSuccess) ...
+  };
 
   const renderUserResponse = () => {
     if (userResponse === null) {
@@ -103,7 +99,7 @@ const RoomScreen = ({ navigation, route }) => {
           <Button
             disabled={textInputValue.trim().length === 0}
             onPress={createPromptResponse}
-            title="Submit"
+            title="Post Response"
           />
         </View>
       );
@@ -196,6 +192,12 @@ const RoomScreen = ({ navigation, route }) => {
               },
             })
           }
+          onLongPress={() =>
+            setReportModal({
+              authorName: res.first_name + ' ' + res.last_name,
+              authorId: res.account_id,
+            })
+          }
         />
       );
     } else {
@@ -221,6 +223,44 @@ const RoomScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.screen}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={reportModal !== null}
+        onRequestClose={() => {
+          setReportModal(null);
+        }}
+      >
+        {reportModal !== null && (
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                Report {reportModal.authorName}&#39;s response?
+              </Text>
+              <View style={styles.modalButtonRow}>
+                <Button
+                  title="Report"
+                  color="red"
+                  onPress={() => {
+                    reportPromptResponse(reportModal.authorId);
+                    setReportModal(null);
+                  }}
+                >
+                  <Text>Close</Text>
+                </Button>
+                <Button
+                  title="Cancel"
+                  color="gray"
+                  onPress={() => setReportModal(null)}
+                >
+                  <Text>Close</Text>
+                </Button>
+              </View>
+            </View>
+          </View>
+        )}
+      </Modal>
+
       <FlatList
         data={items}
         renderItem={renderItemFlatList}
@@ -261,5 +301,35 @@ const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: 8,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+    backgroundColor: '#FFFFFFAA',
+  },
+  modalView: {
+    maxWidth: '80%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalButtonRow: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 10,
   },
 });

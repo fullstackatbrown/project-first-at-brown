@@ -36,7 +36,7 @@ const renderTimeSince = (rawDateString) => {
   return simplePluralize(Math.floor(seconds), 'second');
 };
 
-const PromptResponseCard = ({ response, onClick, children }) => {
+const PromptResponseCard = ({ response, onClick, onLongPress, children }) => {
   const card = (
     <View style={styles.response}>
       <View style={{ flexDirection: 'row', marginBottom: 8 }}>
@@ -66,7 +66,11 @@ const PromptResponseCard = ({ response, onClick, children }) => {
   if (onClick === null) {
     return card;
   } else {
-    return <Pressable onPress={onClick}>{card}</Pressable>;
+    return (
+      <Pressable onPress={onClick} onLongPress={onLongPress}>
+        {card}
+      </Pressable>
+    );
   }
 };
 
