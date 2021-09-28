@@ -39,11 +39,11 @@ exports.list = async (account_id) => {
         concentration: partnerAccount.concentration,
         pronouns: partnerAccount.pronouns,
         bio: partnerAccount.bio,
-        messages: [],
+        latestMessage: message,
       };
     }
 
-    chats[partner_id].messages.push(message);
+    // chats[partner_id].messages.push(); // removed messages, only show latestMessage
   }
 
   const orderedChats = [];
