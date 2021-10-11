@@ -9,6 +9,7 @@ CREATE TABLE account
     picture       VARCHAR,
     concentration VARCHAR,
     pronouns      VARCHAR,
+    bio           VARCHAR,
     token         VARCHAR UNIQUE          NOT NULL,
     email         VARCHAR UNIQUE          NOT NULL,
     created_at    TIMESTAMP DEFAULT NOW() NOT NULL
@@ -36,8 +37,6 @@ CREATE TABLE message
             REFERENCES account,
     created_at   TIMESTAMP DEFAULT NOW() NOT NULL
 );
-
-
 
 CREATE TABLE prompt_response
 (

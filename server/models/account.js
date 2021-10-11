@@ -1,4 +1,4 @@
-const db = require("../config/db");
+const db = require('../config/db');
 
 exports.login = (token) =>
   db.oneOrNone(
@@ -15,26 +15,29 @@ exports.create = async ({
   picture,
   concentration,
   pronouns,
+  bio,
   token,
   email,
 }) => {
   const existingAccountWithToken = await db.oneOrNone(
-    `SELECT * FROM account WHERE token = $1`, [token]
+    `SELECT * FROM account WHERE token = $1`,
+    [token]
   );
   if (existingAccountWithToken != null) {
-    return { error: "Account with authentication token already exists" };
+    return { error: 'Account with authentication token already exists' };
   }
 
   const existingAccountWithEmail = await db.oneOrNone(
-    `SELECT * FROM account WHERE email = $1`, [email]
+    `SELECT * FROM account WHERE email = $1`,
+    [email]
   );
   if (existingAccountWithEmail != null) {
     return { error: "Account with the email '" + email + "' already exists" };
   }
 
   return db.one(
-    `INSERT INTO account (first_name, last_name, year, picture, concentration, pronouns, token, email)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    `INSERT INTO account (first_name, last_name, year, picture, concentration, pronouns, bio, token, email)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       RETURNING account_id`,
     [
       first_name,
@@ -43,11 +46,12 @@ exports.create = async ({
       picture,
       concentration,
       pronouns,
+      bio,
       token,
       email,
     ]
   );
-}
+};
 
 exports.read = (account_id) =>
   db.oneOrNone(
@@ -59,7 +63,7 @@ exports.read = (account_id) =>
 
 exports.update = (
   account_id,
-  { first_name, last_name, year, picture, concentration, pronouns }
+  { first_name, last_name, year, picture, concentration, pronouns, bio }
 ) =>
   db.none(
     `UPDATE account
@@ -68,9 +72,19 @@ exports.update = (
           year          = COALESCE($3, year),
           picture       = COALESCE($4, picture),
           concentration = COALESCE($5, concentration),
-          pronouns      = COALESCE($6, pronouns)
-      WHERE account_id  = $7`,
-    [first_name, last_name, year, picture, concentration, pronouns, account_id]
+          pronouns      = COALESCE($6, pronouns),
+          bio           = COALESCE($7, bio)
+      WHERE account_id  = $8`,
+    [
+      first_name,
+      last_name,
+      year,
+      picture,
+      concentration,
+      pronouns,
+      bio,
+      account_id,
+    ]
   );
 
 exports.delete = (account_id) =>

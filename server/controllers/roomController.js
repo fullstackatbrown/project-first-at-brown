@@ -1,23 +1,45 @@
-const asyncHandler = require("express-async-handler");
+const asyncHandler = require('express-async-handler');
 
-const room = require("../models/room");
+const room = require('../models/room');
+const promptResponse = require('../models/promptResponse');
 
-exports.getRooms = asyncHandler(async (_req, res) => {
+const reportThreshold = 3;
+
+exports.getRooms = asyncHandler(async (req, res) => {
   const rooms = await room.readAll();
   res.json(rooms);
 });
 
 exports.getRoom = asyncHandler(async (req, res) => {
   const roomId = req.params.roomId;
+  const roomData = await room.read(roomId);
 
-  const result = await room.read(roomId);
-
-  if (result === null) {
-    res.status(404).json({ message: "room not found" });
+  if (roomData === null) {
+    res.status(404).json({ message: 'room not found' });
     return;
   }
 
-  res.json(result);
+  const responseData = await promptResponse.read(roomId);
+  const accountId = req.accountId;
+
+  let userResponse = null;
+  const otherResponses = [];
+  for (const response of responseData) {
+    const numReports = response.num_reports;
+    delete response.num_reports;
+    if (response.account_id === accountId) {
+      userResponse = response;
+      response.report_threshold_exceeded = numReports >= reportThreshold;
+    } else if (numReports < reportThreshold) {
+      otherResponses.push(response);
+    }
+  }
+
+  res.json({
+    ...roomData,
+    user_response: userResponse,
+    responses: otherResponses,
+  });
 });
 
 exports.createRoom = asyncHandler(async (req, res) => {

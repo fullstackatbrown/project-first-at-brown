@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken");
-const asyncHandler = require("express-async-handler");
-const account = require("../models/account");
+const jwt = require('jsonwebtoken');
+const asyncHandler = require('express-async-handler');
+const account = require('../models/account');
 
-exports.login = asyncHandler(async (req, res, next) => {
+exports.login = asyncHandler(async (req, res) => {
   const token = req.body.token;
   const result = await account.login(token);
   if (result == null) {
-    res.status(401).json({ error: "Invalid credential" });
+    res.status(401).json({ error: 'Invalid credential' });
   } else {
     const accountId = result.account_id;
     // create jwt
@@ -15,13 +15,14 @@ exports.login = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.signup = asyncHandler(async (req, res, next) => {
+exports.signup = asyncHandler(async (req, res) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const year = req.body.year;
+  const picture = req.body.picture;
   const concentration = req.body.concentration;
-  const picture = ""; // TODO: upload or url?
   const pronouns = req.body.pronouns;
+  const bio = req.body.bio;
   const email = req.body.email;
   const token = req.body.token;
 
@@ -29,11 +30,12 @@ exports.signup = asyncHandler(async (req, res, next) => {
     first_name: firstName,
     last_name: lastName,
     year,
+    picture,
     concentration,
     pronouns,
+    bio,
     email,
     token,
-    picture,
   });
 
   if (result.error) {
@@ -45,13 +47,13 @@ exports.signup = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.get = asyncHandler(async (req, res, next) => {
+exports.get = asyncHandler(async (req, res) => {
   const accountId = req.params.accountId;
   const result = await account.read(accountId);
   res.json(result);
 });
 
-exports.update = asyncHandler(async (req, res, next) => {
+exports.update = asyncHandler(async (req, res) => {
   const accountId = req.accountId;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -59,6 +61,7 @@ exports.update = asyncHandler(async (req, res, next) => {
   const picture = req.body.picture;
   const concentration = req.body.concentration;
   const pronouns = req.body.pronouns;
+  const bio = req.body.bio;
 
   const result = await account.update(accountId, {
     first_name: firstName,
@@ -67,15 +70,16 @@ exports.update = asyncHandler(async (req, res, next) => {
     picture,
     concentration,
     pronouns,
+    bio,
   });
 
   res.json(result);
 });
 
-exports.list = asyncHandler(async (req, res, next) => {
+exports.list = asyncHandler(async (req, res) => {
   const accountIds = req.body.accountIds; // array of accountIds
   const result = [];
-  for (id of accountIds) {
+  for (const id of accountIds) {
     const accountDetails = await account.read(id);
     if (accountDetails != null) {
       result.push(accountDetails);
