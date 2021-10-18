@@ -41,7 +41,7 @@ exports.init = async () => {
 
   // TESTING
   // const testRule = new schedule.RecurrenceRule();
-  // testRule.second = 0;
+  // testRule.second = [0, 15, 30, 45];
   // testRule.tz = 'Etc/UTC';
   // schedule.scheduleJob(testRule, () => {
   //   console.log('TEST UPDATING');
@@ -66,7 +66,7 @@ const updateRooms = async (type) => {
     if (rows[i].status === type) {
       rows[i].status = INTERVALS.USED;
     } else if (rows[i].status === INTERVALS.NEW) {
-      newIndices.append(i);
+      newIndices.push(i);
     }
   }
 
@@ -75,7 +75,7 @@ const updateRooms = async (type) => {
     for (let i = 0; i < rows.length; i++) {
       if (rows[i].status === INTERVALS.USED) {
         rows[i].status = INTERVALS.NEW;
-        newIndices.append(i);
+        newIndices.push(i);
       }
     }
   }
