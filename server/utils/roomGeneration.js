@@ -8,7 +8,8 @@ const room = require('../models/room.js');
 const INTERVALS = {
   DAY: 'DAY',
   WEEK: 'WEEK',
-  UNUSED: 'UNUSED',
+  USED: 'USED',
+  NEW: 'NEW',
 };
 
 const doc = new GoogleSpreadsheet(
@@ -37,6 +38,15 @@ exports.init = async () => {
   weeklyRule.tz = 'Etc/UTC';
 
   schedule.scheduleJob(weeklyRule, () => updateRooms(INTERVALS.WEEK));
+
+  // TESTING
+  // const testRule = new schedule.RecurrenceRule();
+  // testRule.second = 0;
+  // testRule.tz = 'Etc/UTC';
+  // schedule.scheduleJob(testRule, () => {
+  //   console.log('TEST UPDATING');
+  //   updateRooms(INTERVALS.DAY);
+  // });
 };
 
 /**
@@ -50,22 +60,33 @@ const updateRooms = async (type) => {
   const sheet = doc.sheetsByIndex[0];
   const rows = await sheet.getRows();
 
-  // Change rooms of the given type to be UNUSED and vice versa
-  let added = 0;
-  let removed = 0;
+  // Collect indices of new prompts and switch current prompt to used
+  const newIndices = [];
   for (let i = 0; i < rows.length; i++) {
     if (rows[i].status === type) {
-      rows[i].status = INTERVALS.UNUSED;
-      removed++;
-    } else if (rows[i].status === INTERVALS.UNUSED) {
-      rows[i].status = type;
-      await room.createInterval({
-        prompt: rows[i].prompt,
-        interval: `1 ${INTERVALS[type]}`,
-      });
-      added++;
+      rows[i].status = INTERVALS.USED;
+    } else if (rows[i].status === INTERVALS.NEW) {
+      newIndices.append(i);
     }
   }
+
+  // if no new indices, reset everything, except for anything currently in use
+  if (newIndices.length == 0) {
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].status === INTERVALS.USED) {
+        rows[i].status = INTERVALS.NEW;
+        newIndices.append(i);
+      }
+    }
+  }
+
+  // get random prompt and use it
+  const randomIndex = newIndices[Math.floor(Math.random() * newIndices.length)];
+  rows[randomIndex].status = type;
+  await room.createInterval({
+    prompt: rows[randomIndex].prompt,
+    interval: `1 ${INTERVALS[type]}`,
+  });
+
   for (const row of rows) row.save();
-  console.log(`Updated ${type} rooms: added ${added} and removed ${removed}`);
 };
