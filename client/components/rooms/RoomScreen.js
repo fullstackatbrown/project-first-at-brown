@@ -282,9 +282,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textInput: {
+    backgroundColor: '#ebebeb',
     fontSize: 16,
     textAlignVertical: 'top',
-    marginBottom: 8,
+    marginVertical: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    height: 100,
   },
   buttonRow: {
     justifyContent: 'flex-end',
