@@ -1,7 +1,7 @@
 const pgp = require('pg-promise')({});
 
 module.exports = pgp({
-  host: 'localhost',
+  host: process.env.POSTGRES_HOST,
   port: 5432,
   user: process.env.POSTGRES_USERNAME,
   password: process.env.POSTGRES_PASSWORD,
