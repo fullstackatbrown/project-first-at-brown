@@ -15,12 +15,16 @@ const messageRoutes = require('./routes/messageRoutes');
 // import sockets
 const { registerMessagingHandler } = require('./socket/messagingHandler');
 
+// import cron tasks
+const roomGenerator = require('./utils/roomGeneration');
+roomGenerator.init().then(() => console.log('Setup room generator'));
+
 // create express app
 const app = express();
 
 // parsing data
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(helmet()); //set standard http headers for security
 app.use(compression()); // compress data
