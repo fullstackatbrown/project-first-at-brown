@@ -59,7 +59,7 @@ app.use((err, req, res) => {
 });
 
 // start server
-const server = app.listen(process.env.PORT || 3000);
+const server = app.listen(3000);
 const io = require('socket.io')(server);
 app.set('socketio', io);
 
