@@ -60,6 +60,7 @@ app.use((err, req, res) => {
 
 // start server
 const server = app.listen(3000);
+console.log("Server listening")
 const io = require('socket.io')(server);
 app.set('socketio', io);
 
