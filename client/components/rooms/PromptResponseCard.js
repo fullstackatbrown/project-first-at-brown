@@ -39,26 +39,7 @@ const renderTimeSince = (rawDateString) => {
 const PromptResponseCard = ({ response, onClick, onLongPress, children }) => {
   const card = (
     <View style={styles.response}>
-      <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-        <Avatar
-          rounded
-          size="small"
-          source={{
-            uri:
-              response.picture ||
-              'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
-          }}
-          placeholderStyle={{ backgroundColor: 'transparent' }}
-          containerStyle={{ marginRight: 15 }}
-        />
-        <View>
-          <Text>
-            {response.first_name} {response.last_name}
-          </Text>
-          <Text>{renderTimeSince(response.created_at)} ago</Text>
-        </View>
-      </View>
-      <Text style={{ marginBottom: 8 }}>{response.body}</Text>
+      <Text>{response.body}</Text>
       {children}
     </View>
   );
