@@ -4,6 +4,9 @@ const schedule = require('node-schedule');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const room = require('../models/room.js');
+const roomConfig = require('../config/roomConfig.json');
+
+const TIMEZONE = 'America/New_York';
 
 const INTERVALS = {
   DAY: 'DAY',
@@ -26,18 +29,24 @@ exports.init = async () => {
     private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/gm, '\n'),
   });
 
-  const dailyRule = new schedule.RecurrenceRule();
-  dailyRule.hour = 3;
-  dailyRule.tz = 'Etc/UTC';
+  for (const roomConfigItem of roomConfig) {
+    const rule = new schedule.RecurrenceRule();
+    rule.tz = TIMEZONE;
 
-  updateRooms(INTERVALS.DAY);
-  schedule.scheduleJob(dailyRule, () => updateRooms(INTERVALS.DAY));
-
-  const weeklyRule = new schedule.RecurrenceRule();
-  weeklyRule.dayOfWeek = 0;
-  weeklyRule.tz = 'Etc/UTC';
-
-  schedule.scheduleJob(weeklyRule, () => updateRooms(INTERVALS.WEEK));
+    if (roomConfigItem.intervalType === 'daily') {
+      rule.hour = roomConfigItem.hour;
+      schedule.scheduleJob(rule, () => updateRooms(INTERVALS.DAY));
+    } else if (roomConfigItem.intervalType === 'weekly') {
+      rule.dayOfWeek = roomConfigItem.day;
+      rule.hour = roomConfigItem.hour;
+      schedule.scheduleJob(rule, () => updateRooms(INTERVALS.WEEK));
+    } else {
+      console.log(
+        'unsupported interval type in room config: ' +
+          roomConfigItem.intervalType
+      );
+    }
+  }
 
   // TESTING
   // const testRule = new schedule.RecurrenceRule();
