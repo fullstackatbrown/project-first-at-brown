@@ -136,7 +136,7 @@ const RoomScreen = ({ navigation, route }) => {
       );
     } else {
       return (
-        <PromptResponseCard response={userResponse} onClick={null}>
+        <PromptResponseCard response={userResponse} onClick={null} isAnon>
           <View style={styles.buttonRow}>
             {userResponse.report_threshold_exceeded && (
               <Icon name="exclamation-circle" size={24} color="red" />
@@ -190,6 +190,7 @@ const RoomScreen = ({ navigation, route }) => {
               authorId: res.account_id,
             })
           }
+          isAnon
         />
       );
     } else {
@@ -332,5 +333,5 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: '100%',
-  }
+  },
 });

@@ -80,9 +80,13 @@ const ChatScreen = ({ route }) => {
   }, [messages]);
 
   return (
-    <KeyboardAvoidingView style={styles.screen} behavior="padding" enabled keyboardVerticalOffset={100}>
-
-    {/* <KeyboardAvoidingView style={styles.screen}> */}
+    <KeyboardAvoidingView
+      style={styles.screen}
+      behavior="padding"
+      enabled
+      keyboardVerticalOffset={100}
+    >
+      {/* <KeyboardAvoidingView style={styles.screen}> */}
       <FlatList
         inverted
         keyExtractor={(item) => item.message_id.toString()}

@@ -36,10 +36,37 @@ const renderTimeSince = (rawDateString) => {
   return simplePluralize(Math.floor(seconds), 'second');
 };
 
-const PromptResponseCard = ({ response, onClick, onLongPress, children }) => {
+const PromptResponseCard = ({
+  response,
+  onClick,
+  onLongPress,
+  children,
+  isAnon,
+}) => {
   const card = (
     <View style={styles.response}>
-      <Text>{response.body}</Text>
+      {!isAnon && (
+        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+          <Avatar
+            rounded
+            size="small"
+            source={{
+              uri:
+                response.picture ||
+                'https://icon-library.com/images/default-user-icon/default-user-icon-6.jpg',
+            }}
+            placeholderStyle={{ backgroundColor: 'transparent' }}
+            containerStyle={{ marginRight: 15 }}
+          />
+          <View>
+            <Text>
+              {response.first_name} {response.last_name}
+            </Text>
+            <Text>{renderTimeSince(response.created_at)} ago</Text>
+          </View>
+        </View>
+      )}
+      <Text style={{ marginBottom: isAnon ? 0 : 8 }}>{response.body}</Text>
       {children}
     </View>
   );
