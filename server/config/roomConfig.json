@@ -1,0 +1,15 @@
+[
+  {
+    "intervalType": "daily",
+    "hour": 3
+  },
+  {
+    "intervalType": "daily",
+    "hour": 15
+  },
+  {
+    "intervalType": "weekly",
+		"day": 0,
+    "hour": 3
+  }
+]
