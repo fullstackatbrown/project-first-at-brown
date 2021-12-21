@@ -17,7 +17,7 @@ const { registerMessagingHandler } = require('./socket/messagingHandler');
 
 // import cron tasks
 const roomGenerator = require('./utils/roomGeneration');
-roomGenerator.init().then(() => console.log('Setup room generator'));
+roomGenerator.init().then(() => console.log('Set up room generator'));
 
 // create express app
 const app = express();
