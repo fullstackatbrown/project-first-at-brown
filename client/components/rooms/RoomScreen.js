@@ -259,6 +259,7 @@ const RoomScreen = ({ navigation, route }) => {
         onRefresh={fetchRoom}
         refreshing={isRefreshing}
         keyExtractor={keyExtractorFlatList}
+        style={styles.scrollView}
       />
     </View>
   );
@@ -282,9 +283,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   textInput: {
+    backgroundColor: '#ebebeb',
     fontSize: 16,
     textAlignVertical: 'top',
-    marginBottom: 8,
+    marginVertical: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    height: 100,
   },
   buttonRow: {
     justifyContent: 'flex-end',
@@ -324,4 +330,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  scrollView: {
+    height: '100%',
+  }
 });

@@ -5,8 +5,8 @@ const { GoogleSpreadsheet } = require('google-spreadsheet');
 
 const room = require('../models/room.js');
 const roomConfig = require('../config/roomConfig.json');
-
 const TIMEZONE = 'America/New_York';
+
 
 const INTERVALS = {
   DAY: 'DAY',

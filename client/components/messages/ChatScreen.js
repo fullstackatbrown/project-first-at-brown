@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, View, Platform } from 'react-native';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import socket from '../../socket';
@@ -79,8 +79,9 @@ const ChatScreen = ({ route }) => {
     });
   }, [messages]);
 
-  return (
-    <View style={styles.screen}>
+  // common display for both os
+  const display = (
+    <>
       <FlatList
         inverted
         keyExtractor={(item) => item.message_id.toString()}
@@ -97,8 +98,24 @@ const ChatScreen = ({ route }) => {
           blurOnSubmit={false}
         />
       </View>
-    </View>
+    </>
   );
+
+  if (Platform.OS === 'ios') {
+    return (
+      <KeyboardAvoidingView
+        style={styles.screen}
+        behavior="padding"
+        enabled
+        keyboardVerticalOffset={100}
+      >
+        {/* <KeyboardAvoidingView style={styles.screen}> */}
+        {display}
+      </KeyboardAvoidingView>
+    );
+  } else {
+    return <View style={styles.screen}>{display}</View>;
+  }
 };
 
 export default ChatScreen;
@@ -108,5 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  userInput: {},
+  userInput: {
+    marginBottom: 10,
+  },
 });

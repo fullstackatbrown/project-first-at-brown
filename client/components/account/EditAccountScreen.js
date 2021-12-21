@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { Avatar, Button, Divider, Input } from 'react-native-elements';
 import { useSelector } from 'react-redux';
 import API from '../../api';
@@ -39,6 +39,7 @@ const EditAccountScreen = ({ route, navigation }) => {
   };
 
   return (
+    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled   keyboardVerticalOffset={100}>
     <ScrollView style={styles.screen}>
       <View style={styles.avatar}>
         <Avatar
@@ -116,12 +117,13 @@ const EditAccountScreen = ({ route, navigation }) => {
             color: 'white',
           }}
           title="Save Edits"
-          style={styles.section}
+          style={[styles.section, {marginBottom: 40}]}
           onPress={onSubmitHandler}
           loading={isSending}
         />
       </View>
     </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

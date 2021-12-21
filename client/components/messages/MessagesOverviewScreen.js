@@ -54,6 +54,7 @@ const MessagesOverviewScreen = ({ navigation }) => {
         onRefresh={refreshChats}
         refreshing={isRefreshing}
         keyExtractor={(_item, index) => index.toString()}
+        style={styles.scrollView}
       />
     </View>
   );
@@ -66,4 +67,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
+  scrollView: {
+    height: '100%',
+  }
 });
