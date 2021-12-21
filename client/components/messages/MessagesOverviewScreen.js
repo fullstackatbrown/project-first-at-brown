@@ -69,5 +69,5 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: '100%',
-  }
+  },
 });
