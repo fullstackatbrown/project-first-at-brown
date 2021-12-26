@@ -36,6 +36,7 @@ const SignupScreen = ({ route }) => {
       setIsSending(false);
       dispatch(login(response.data.token, response.data.accountId));
     } catch (e) {
+      console.log(e.response)
       setIsSending(false);
     }
   };

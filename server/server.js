@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const compression = require('compression');
+var pjson = require('./package.json');
 
 // import routes
 const accountRoutes = require('./routes/accountRoutes');
@@ -48,6 +49,11 @@ app.use('/', roomRoutes);
 app.use('/', promptResponseRoutes);
 app.use('/', chatRoutes);
 app.use('/', messageRoutes);
+
+// test route
+app.get('/test', (req, res) => {
+  res.send(`Server version ${pjson.version}`)
+});
 
 // route not found
 app.use('/', (req, res) => {

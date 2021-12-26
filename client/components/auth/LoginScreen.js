@@ -47,7 +47,6 @@ const LoginScreen = ({ navigation }) => {
       // SUCCESS - login
       dispatch(login(response.data.token, response.data.accountId));
     } catch (e) {
-      console.log('IS GOOD');
       // ERROR - if 401, redirect to signup
       console.log(e);
       console.log(e.response);
