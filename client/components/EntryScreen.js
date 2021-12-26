@@ -17,7 +17,7 @@ const EntryScreen = () => {
       const accountData = await AsyncStorage.getItem('@account');
       if (accountData) {
         const accountDataJSON = JSON.parse(accountData);
-        dispatch(autoLogin("accountDataJSON.token", "accountDataJSON.accountId"));
+        dispatch(autoLogin(accountDataJSON.token, accountDataJSON.accountId));
       }
     };
 
