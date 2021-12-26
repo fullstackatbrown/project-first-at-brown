@@ -14,7 +14,13 @@ module.exports = (req, res, next) => {
 
   // parse token - Bearer <token>
   token = token.split(' ')[1];
-  token = jwt.verify(token, process.env.JWT_KEY);
+  try {
+    token = jwt.verify(token, process.env.JWT_KEY);
+  } catch {
+    const error = new Error('Unauthorized');
+    error.statusCode = 401;
+    throw error;
+  }
 
   // not authenticated
   if (!token) {
