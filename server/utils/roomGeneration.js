@@ -30,15 +30,18 @@ exports.init = async () => {
   });
 
   for (const roomConfigItem of roomConfig) {
+    console.log(roomConfigItem)
     const rule = new schedule.RecurrenceRule();
     rule.tz = TIMEZONE;
 
     if (roomConfigItem.intervalType === 'daily') {
       rule.hour = roomConfigItem.hour;
-      schedule.scheduleJob(rule, () => updateRooms(INTERVALS.DAY));
+      rule.minute = 0
+      schedule.scheduleJob(rule, () => console.log(rule));
     } else if (roomConfigItem.intervalType === 'weekly') {
       rule.dayOfWeek = roomConfigItem.day;
       rule.hour = roomConfigItem.hour;
+      rule.minute = 0
       schedule.scheduleJob(rule, () => updateRooms(INTERVALS.WEEK));
     } else {
       console.log(
@@ -63,6 +66,7 @@ exports.init = async () => {
  * @param {string} type The type of room to update
  */
 const updateRooms = async (type) => {
+  console.log("Called", type)
   await doc.loadInfo();
 
   // Get columns A and B of all rows excluding the header (row 1)
