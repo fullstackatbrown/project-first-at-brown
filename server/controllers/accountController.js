@@ -16,22 +16,22 @@ exports.login = asyncHandler(async (req, res) => {
 });
 
 exports.signup = asyncHandler(async (req, res) => {
+  console.log('HI', req.file);
+  const filePath = `${process.env.HOSTNAME}/uploads/${req.file.filename}`;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const year = req.body.year;
-  const picture = req.body.picture;
-  const concentration = req.body.concentration;
+  const hometown = req.body.hometown;
   const pronouns = req.body.pronouns;
   const bio = req.body.bio;
   const email = req.body.email;
   const token = req.body.token;
-
   const result = await account.create({
     first_name: firstName,
     last_name: lastName,
     year,
-    picture,
-    concentration,
+    picture: filePath,
+    hometown,
     pronouns,
     bio,
     email,
@@ -59,7 +59,7 @@ exports.update = asyncHandler(async (req, res) => {
   const lastName = req.body.lastName;
   const year = req.body.year;
   const picture = req.body.picture;
-  const concentration = req.body.concentration;
+  const hometown = req.body.hometown;
   const pronouns = req.body.pronouns;
   const bio = req.body.bio;
 
@@ -68,7 +68,7 @@ exports.update = asyncHandler(async (req, res) => {
     last_name: lastName,
     year,
     picture,
-    concentration,
+    hometown,
     pronouns,
     bio,
   });
@@ -85,5 +85,14 @@ exports.list = asyncHandler(async (req, res) => {
       result.push(accountDetails);
     }
   }
+  res.json(result);
+});
+
+exports.setPhoto = asyncHandler(async (req, res) => {
+  const filePath = `${process.env.HOSTNAME}/uploads/${req.file.filename}`;
+  const result = await account.set(req.accountId, {
+    field: 'picture',
+    value: filePath,
+  });
   res.json(result);
 });

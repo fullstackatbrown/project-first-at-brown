@@ -13,6 +13,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import PromptResponseCard from './PromptResponseCard';
 import RoomCard from './RoomCard';
 import API from '../../api';
+import { Entypo } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StackActions } from '@react-navigation/native';
+import ResponseModal from './ReponseModal';
+import { BlurView } from 'expo-blur';
 
 const RoomScreen = ({ navigation, route }) => {
   const [prompt, setPrompt] = useState(null);
@@ -23,6 +28,12 @@ const RoomScreen = ({ navigation, route }) => {
   const [isEditingResponse, setIsEditingResponse] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [reportModal, setReportModal] = useState(null);
+  const [responseModal, setResponseModal] = useState(false);
+  const [room, setRoom] = useState(null);
+
+  useEffect(() => {
+    fetchRoom();
+  }, [responseModal]);
 
   // List of items to render on this room's screen
   const items = useMemo(() => {
@@ -42,26 +53,13 @@ const RoomScreen = ({ navigation, route }) => {
   const headers = { Authorization: `Bearer ${token}` };
 
   const fetchRoom = async () => {
-    setIsRefreshing(true);
     const response = await API.get('/room/' + roomId, { headers });
     const { expires_at, prompt, responses, user_response } = response.data;
     setExpiresAt(expires_at);
     setPrompt(prompt);
     setResponses(responses);
     setUserResponse(user_response);
-    setIsRefreshing(false);
-  };
-
-  const createPromptResponse = async () => {
-    const body = textInputValue.trim();
-    setTextInputValue('');
-    const response = await API.post('/prompt/' + roomId, { body }, { headers });
-    if (!response.data.createSuccess) {
-      console.log(
-        'TODO: something went wrong (i.e. user already made a response)'
-      );
-    }
-    fetchRoom();
+    setRoom(response.data);
   };
 
   const updatePromptResponse = async () => {
@@ -86,23 +84,7 @@ const RoomScreen = ({ navigation, route }) => {
 
   const renderUserResponse = () => {
     if (userResponse === null) {
-      return (
-        <View style={styles.responseInput}>
-          <Text style={styles.responseInputTitle}>Respond to prompt</Text>
-          <TextInput
-            multiline
-            numberOfLines={3}
-            value={textInputValue}
-            onChangeText={setTextInputValue}
-            style={styles.textInput}
-          />
-          <Button
-            disabled={textInputValue.trim().length === 0}
-            onPress={createPromptResponse}
-            title="Post Response"
-          />
-        </View>
-      );
+      return <></>;
     } else if (isEditingResponse) {
       return (
         <View style={styles.responseInput}>
@@ -141,22 +123,21 @@ const RoomScreen = ({ navigation, route }) => {
             {userResponse.report_threshold_exceeded && (
               <Icon name="exclamation-circle" size={24} color="red" />
             )}
-            <View style={styles.marginLeft}>
-              <Button
-                title="Edit"
-                onPress={() => {
-                  setIsEditingResponse(true);
-                  setTextInputValue(userResponse.body);
-                }}
-              />
-            </View>
-            <View style={styles.marginLeft}>
-              <Button
-                title="Delete"
-                color="red"
-                onPress={deletePromptResponse}
-              />
-            </View>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              style={{
+                paddingVertical: 2,
+                paddingHorizontal: 8,
+                borderWidth: 1,
+                borderRadius: 20,
+                borderColor: 'red',
+                marginTop: 10,
+              }}
+              onPress={deletePromptResponse}
+            >
+              <Text style={{ color: 'red' }}>Delete</Text>
+            </TouchableOpacity>
           </View>
         </PromptResponseCard>
       );
@@ -166,12 +147,37 @@ const RoomScreen = ({ navigation, route }) => {
   const renderItemFlatList = ({ item }) => {
     if (item.type === 'prompt') {
       return (
-        <RoomCard
-          prompt={prompt}
-          numResponses={responses.length + (userResponse === null ? 0 : 1)}
-          expiresAt={expiresAt}
-          onClick={null}
-        />
+        <>
+          <View
+            style={{ height: 100, justifyContent: 'flex-end', padding: 10 }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                const popAction = StackActions.pop(1);
+                navigation.dispatch(popAction);
+              }}
+            >
+              <Entypo name="chevron-thin-left" size={24} color="black" />
+            </TouchableOpacity>
+          </View>
+          <RoomCard
+            answered={room.user_response}
+            openAnswerModal={() => setResponseModal(true)}
+            largeTitle
+            prompt={prompt}
+            numResponses={responses.length + (userResponse === null ? 0 : 1)}
+            expiresAt={expiresAt}
+            onClick={null}
+          />
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderColor: '#EDEDED',
+              marginHorizontal: 16,
+              marginBottom: 26,
+            }}
+          ></View>
+        </>
       );
     } else if (item.type === 'userResponse') {
       return renderUserResponse();
@@ -215,54 +221,67 @@ const RoomScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={reportModal !== null}
-        onRequestClose={() => {
-          setReportModal(null);
-        }}
-      >
-        {reportModal !== null && (
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                Report {reportModal.authorName}&#39;s response?
-              </Text>
-              <View style={styles.modalButtonRow}>
-                <Button
-                  title="Report"
-                  color="red"
-                  onPress={() => {
-                    reportPromptResponse(reportModal.authorId);
-                    setReportModal(null);
-                  }}
-                >
-                  <Text>Close</Text>
-                </Button>
-                <Button
-                  title="Cancel"
-                  color="gray"
-                  onPress={() => setReportModal(null)}
-                >
-                  <Text>Close</Text>
-                </Button>
-              </View>
-            </View>
+    <>
+      {room && (
+        <>
+          <ResponseModal
+            close={() => setResponseModal(false)}
+            visible={responseModal}
+            item={room}
+          />
+          <View style={styles.screen}>
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={reportModal !== null}
+              onRequestClose={() => {
+                setReportModal(null);
+              }}
+            >
+              {reportModal !== null && (
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>
+                      Report {reportModal.authorName}&#39;s response?
+                    </Text>
+                    <View style={styles.modalButtonRow}>
+                      <Button
+                        title="Report"
+                        color="red"
+                        onPress={() => {
+                          reportPromptResponse(reportModal.authorId);
+                          setReportModal(null);
+                        }}
+                      >
+                        <Text>Close</Text>
+                      </Button>
+                      <Button
+                        title="Cancel"
+                        color="gray"
+                        onPress={() => setReportModal(null)}
+                      >
+                        <Text>Close</Text>
+                      </Button>
+                    </View>
+                  </View>
+                </View>
+              )}
+            </Modal>
+            <FlatList
+              data={items}
+              renderItem={renderItemFlatList}
+              onRefresh={fetchRoom}
+              refreshing={isRefreshing}
+              keyExtractor={keyExtractorFlatList}
+              style={styles.scrollView}
+            />
           </View>
-        )}
-      </Modal>
-
-      <FlatList
-        data={items}
-        renderItem={renderItemFlatList}
-        onRefresh={fetchRoom}
-        refreshing={isRefreshing}
-        keyExtractor={keyExtractorFlatList}
-        style={styles.scrollView}
-      />
-    </View>
+        </>
+      )}
+      {responseModal && (
+        <BlurView style={styles.absolute} tint="dark" intensity={40} />
+      )}
+    </>
   );
 };
 
@@ -271,6 +290,7 @@ export default RoomScreen;
 const styles = StyleSheet.create({
   screen: {
     padding: 10,
+    backgroundColor: '#FBFBFB',
   },
   responseInput: {
     backgroundColor: 'white',
@@ -278,10 +298,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     marginVertical: 2,
-  },
-  responseInputTitle: {
-    alignSelf: 'center',
-    fontSize: 20,
   },
   textInput: {
     backgroundColor: '#ebebeb',
@@ -333,5 +349,12 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     height: '100%',
+  },
+  absolute: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });

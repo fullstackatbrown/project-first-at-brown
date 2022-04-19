@@ -36,7 +36,7 @@ exports.list = async (account_id) => {
         lastName: partnerAccount.last_name,
         year: partnerAccount.year,
         picture: partnerAccount.picture,
-        concentration: partnerAccount.concentration,
+        hometown: partnerAccount.hometown,
         pronouns: partnerAccount.pronouns,
         bio: partnerAccount.bio,
         latestMessage: message,

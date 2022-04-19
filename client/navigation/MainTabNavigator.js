@@ -1,42 +1,53 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import MessagesNavigator from './MessagesNavigator';
 import RoomsNavigator from './RoomsNavigator';
 import AccountNavigator from './AccountNavigator';
+import { View } from 'react-native';
+import ChatIcon from '../components/icons/ChatIcon';
+import ProfileIcon from '../components/icons/ProfileIcon';
+import RoomsIcon from '../components/icons/RoomsIcon';
 
 const Tab = createBottomTabNavigator();
 
-const getTabBarIcon = (iconName) => {
-  const tabBarIcon = ({ color, size }) => (
-    <MaterialCommunityIcons name={iconName} color={color} size={size} />
-  );
-  return tabBarIcon;
-};
-
 const MainTabNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      tabBarOptions={{ showLabel: false, activeTintColor: '#4F19A8' }}
+      initialRouteName="Rooms"
+    >
       <Tab.Screen
         name="Messages"
         component={MessagesNavigator}
         options={{
-          tabBarIcon: getTabBarIcon('forum'),
+          tabBarIcon: ({ color }) => (
+            <View style={{ width: '100%', height: 28 }}>
+              <ChatIcon color={color} />
+            </View>
+          ),
         }}
       />
       <Tab.Screen
         name="Rooms"
         component={RoomsNavigator}
         options={{
-          tabBarIcon: getTabBarIcon('account-group'),
+          tabBarIcon: ({ color }) => (
+            <View style={{ width: '100%', height: 28 }}>
+              <RoomsIcon color={color} />
+            </View>
+          ),
         }}
       />
       <Tab.Screen
         name="Account"
         component={AccountNavigator}
         options={{
-          tabBarIcon: getTabBarIcon('cogs'),
+          tabBarIcon: ({ color }) => (
+            <View style={{ width: '100%', height: 28 }}>
+              <ProfileIcon color={color} />
+            </View>
+          ),
         }}
       />
     </Tab.Navigator>

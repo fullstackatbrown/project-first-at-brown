@@ -29,7 +29,7 @@ const MessagesHeader = ({ picture, name }) => {
 
 const MessagesNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Messages" component={MessagesOverviewScreen} />
       <Stack.Screen
         name="Chat"

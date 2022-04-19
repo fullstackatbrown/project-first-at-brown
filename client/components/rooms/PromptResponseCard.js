@@ -66,7 +66,15 @@ const PromptResponseCard = ({
           </View>
         </View>
       )}
-      <Text style={{ marginBottom: isAnon ? 0 : 8 }}>{response.body}</Text>
+      <Text
+        style={{
+          marginBottom: isAnon ? 0 : 8,
+          fontWeight: '600',
+          fontSize: 16,
+        }}
+      >
+        {response.body}
+      </Text>
       {children}
     </View>
   );
@@ -87,10 +95,14 @@ export default PromptResponseCard;
 const styles = StyleSheet.create({
   response: {
     flexDirection: 'column',
-    backgroundColor: 'white',
     padding: 16,
+    marginBottom: 24,
+    shadowOffset: { height: 4 },
+    shadowRadius: 15,
     borderRadius: 10,
-    marginHorizontal: 10,
-    marginVertical: 2,
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    marginHorizontal: 16,
   },
 });

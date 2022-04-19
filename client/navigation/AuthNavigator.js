@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import LoginScreen from '../components/auth/LoginScreen';
+import LoginScreen from '../components/auth/LoginScreen'; // This is problematic import
 import SignupScreen from '../components/auth/SignupScreen';
 
 const AuthStack = createStackNavigator();

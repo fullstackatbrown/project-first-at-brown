@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 
 const RoomsNavigator = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Rooms" component={RoomsOverviewScreen} />
       <Stack.Screen
         name="Room"

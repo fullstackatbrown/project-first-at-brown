@@ -16,9 +16,7 @@ const EditAccountScreen = ({ route, navigation }) => {
   const [firstName, setFirstName] = useState(accountDetails.first_name);
   const [lastName, setLastName] = useState(accountDetails.last_name);
   const [year, setYear] = useState(accountDetails.year);
-  const [concentration, setConcentration] = useState(
-    accountDetails.concentration
-  );
+  const [hometown, sethometown] = useState(accountDetails.hometown);
   const [pronouns, setPronouns] = useState(accountDetails.pronouns);
   const [introduction, setIntroduction] = useState(accountDetails.bio);
 
@@ -31,7 +29,7 @@ const EditAccountScreen = ({ route, navigation }) => {
         lastName,
         picture: accountDetails.picture || '',
         year,
-        concentration,
+        hometown,
         pronouns,
         bio: introduction,
       },
@@ -92,10 +90,10 @@ const EditAccountScreen = ({ route, navigation }) => {
         </View>
         <View style={styles.section}>
           <Input
-            label="Concentration"
-            value={concentration}
+            label="hometown"
+            value={hometown}
             onChangeText={(value) => {
-              setConcentration(value);
+              sethometown(value);
             }}
           />
         </View>

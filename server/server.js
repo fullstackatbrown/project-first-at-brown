@@ -49,10 +49,11 @@ app.use('/', roomRoutes);
 app.use('/', promptResponseRoutes);
 app.use('/', chatRoutes);
 app.use('/', messageRoutes);
+app.use(express.static('public'));
 
 // test route
 app.get('/test', (req, res) => {
-  res.send(`Server version ${pjson.version}`)
+  res.send(`Server version ${pjson.version}`);
 });
 
 // route not found
@@ -70,7 +71,7 @@ app.use((err, req, res) => {
 
 // start server
 const server = app.listen(80);
-console.log("Server listening")
+console.log('Server listening');
 const io = require('socket.io')(server);
 app.set('socketio', io);
 

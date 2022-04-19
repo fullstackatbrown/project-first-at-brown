@@ -12,7 +12,7 @@ module.exports.registerAccount = async () => {
     firstName: 'Jane',
     lastName: 'Doe',
     year: '2025',
-    concentration: 'Computer Science',
+    hometown: 'Computer Science',
     pronouns: 'she/her/hers',
     bio: 'Swimmer, baker, and pianist',
     email: 'jane_doe@brown.edu',

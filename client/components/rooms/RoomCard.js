@@ -1,18 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-elements';
+import moment from 'moment';
 
-const renderDate = (rawDateString) => {
-  const date = new Date(rawDateString);
-  const weekday = new Intl.DateTimeFormat('en', { weekday: 'long' }).format(
-    date
-  );
-  const month = new Intl.DateTimeFormat('en', { month: 'long' }).format(date);
-  const day = new Intl.DateTimeFormat('en', { day: 'numeric' }).format(date);
-  return `${weekday} ${month} ${day}`;
-};
-
-const RoomCard = ({ prompt, numResponses, expiresAt, onClick }) => {
+const RoomCard = ({
+  prompt,
+  numResponses,
+  expiresAt,
+  onClick,
+  answered,
+  answerable = true,
+  largeTitle = false,
+  openAnswerModal,
+}) => {
   const displayNumResponses = () => {
     const pluralizedText = numResponses === 1 ? ' response' : ' responses';
     return numResponses + pluralizedText;
@@ -20,12 +20,33 @@ const RoomCard = ({ prompt, numResponses, expiresAt, onClick }) => {
 
   const card = (
     <View style={styles.card}>
-      <Text h4 style={styles.cardHeader}>
+      <Text style={{ ...styles.cardHeader, fontSize: largeTitle ? 20 : 16 }}>
         {prompt}
       </Text>
+      <Text style={styles.numResponses}>{displayNumResponses()}</Text>
       <View style={styles.cardFooter}>
-        <Text style={styles.numResponses}>{displayNumResponses()}</Text>
-        <Text style={styles.expiresAt}>closes {renderDate(expiresAt)}</Text>
+        <Text style={{ ...styles.expiresAt, marginTop: answerable ? 0 : 8 }}>
+          Expires in {moment(expiresAt).fromNow()}
+        </Text>
+        {answerable && (
+          <TouchableOpacity
+            disabled={answered}
+            onPress={openAnswerModal}
+            style={{
+              ...styles.answerButton,
+              backgroundColor: answered ? null : '#4F19A8',
+            }}
+          >
+            <Text
+              style={{
+                ...styles.answer,
+                color: !answered ? 'white' : '#4F19A8',
+              }}
+            >
+              {answered ? 'Answered ✓' : 'Answer'}
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -42,23 +63,37 @@ export default RoomCard;
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'column',
-    backgroundColor: 'white',
     padding: 16,
     borderRadius: 10,
-    margin: 10,
   },
   cardHeader: {
-    marginBottom: 6,
+    marginBottom: 10,
+    fontWeight: '600',
+    fontSize: 16,
   },
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
   numResponses: {
-    fontSize: 16,
+    fontSize: 14,
+    color: '#989898',
+    marginBottom: 2,
   },
   expiresAt: {
-    fontSize: 12,
+    fontSize: 16,
+    color: '#989898',
+  },
+  answer: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  answerButton: {
+    borderRadius: 10,
+    borderWidth: 1,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderColor: '#4F19A8',
   },
 });
